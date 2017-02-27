@@ -6,6 +6,10 @@ import * as path from "path";
 import * as favicon from "serve-favicon";
 import * as fs from "fs-promise-tsc";
 
+// Declare middleware
+import TokenMiddleware from "./middleware/token.middleware";
+
+// Declare routes
 import { Index } from "./routes/";
 
 
@@ -59,9 +63,10 @@ export class Server {
         const router: express.Router = express.Router();
 
         const routes = new Index();
+        const tokenMiddleware = new TokenMiddleware();
 
         //home page
-        router.get("/", routes.index.bind(routes));
+        router.get("/", tokenMiddleware.checkToken.bind(tokenMiddleware), routes.index.bind(routes));
 
         this.app.use(router);
 

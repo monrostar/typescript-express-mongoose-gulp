@@ -4,10 +4,11 @@ import * as debug from "debug";
 import { Server } from "./server";
 import * as http from "http";
 import * as express from "express";
+import config from "./config/index";
 
 const expressDebug = debug("express-server");
 
-const port = normalizePort(process.env.PORT || 3000);
+const port = normalizePort(process.env.PORT || config.port);
 
 const app = express();
 app.set("port", port);
