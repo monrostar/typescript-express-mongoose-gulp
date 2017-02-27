@@ -103,12 +103,7 @@ gulp.task('client-watch', function () {
 gulp.task('public-compile-sass', function () {
   return gulp.src('./public/sass/index.scss')
     .pipe(sass({
-      // bower зависимости подключенные в index.scss
       outputStyle: 'compressed'
-      // includePaths: [
-      //   ./bower_components/font-awesome/scss',
-      //   ./bower_components/foundation-sites/assets'
-      // ],
     }))
     .pipe(gulp.dest('dist/public/css/'));
 });
