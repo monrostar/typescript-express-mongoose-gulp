@@ -9,8 +9,8 @@ export default class TokenMiddleware {
 
         if (!token) {
             return next({
-                status : 403,
-                message: "Forbidden. No token !"
+                status  : 403,
+                message : "Forbidden. No token !"
             });
         }
 

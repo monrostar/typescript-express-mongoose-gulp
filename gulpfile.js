@@ -16,26 +16,32 @@ var gulp            = require("gulp"),
 
 //www
 gulp.task('default', ['www']);
-gulp.task('www', ['www-start', 'www-watch', 'client-watch', 'public-watch-sass', 'static-move-watch'], function () {
+gulp.task('www', ['serve', 'www-watch', 'client-watch', 'public-watch-sass', 'static-move-watch'], function () {
 
 });
 
-gulp.task('www-start', ['build-dist'], function () {
-  if (www) www.kill();
-  www = spawn('node', ['./dist/server/www'], { stdio: 'inherit' });
-  www.on('close', function (code) {
-    if (code === 8) {
-      gulp.log('Error detected, waiting for changes...');
-    }
+gulp.task('serve', ['build-dist'], function () {
+  nodemon({
+    script: './dist/server/www',
+    ext   : 'js',
+  }).on('restart', function () {
+    setTimeout(function () {
+      livereload.changed();
+    }, 500);
   });
 });
 
-
+/**
+ * Watchers
+ */
 gulp.task('www-watch', function () {
   // restarts the server when server side code changes, or the client side asset map
-  return gulp.watch(['server/**/*.ts', 'dist/assets/webpack-assets.json'], ["www"]);
+  return gulp.watch(['server/**/*.ts', 'dist/assets/webpack-assets.json'], ["compile-typescript"]);
 });
 
+gulp.task('client-watch', function () {
+  return gulp.watch(['client/**/*.ts', 'client/**/*.tsx'], ["client-compile-typescript"]);
+});
 
 gulp.task('public-watch-sass', function () {
   return gulp.watch(['public/**/*.scss'], ["public-compile-sass"]);
@@ -51,9 +57,11 @@ gulp.task("move-files", function () {
 gulp.task('static-move-watch', function () {
   return gulp.watch(filesToMove, ["move-files"]);
 });
+// END Watchers
 
 
-//Build
+// Server build
+
 gulp.task("build-dist", ['compile-typescript', 'client-compile-typescript', 'public-compile-sass', 'move-files']);
 
 gulp.task("compile-typescript", ["ts-lint"], function () {
@@ -76,6 +84,7 @@ gulp.task("ts-lint", function () {
     }));
 });
 
+
 // Client build
 
 gulp.task("client-compile-typescript", ["client-ts-lint"], function () {
@@ -94,9 +103,6 @@ gulp.task("client-ts-lint", function () {
     }));
 });
 
-gulp.task('client-watch', function () {
-  return gulp.watch(['client/**/*.ts', 'client/**/*.tsx'], ["client-compile-typescript"]);
-});
 
 // Sass compile
 
