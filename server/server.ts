@@ -118,7 +118,6 @@ export class Server {
       this.app.use((err : any, req : express.Request, res : express.Response, next : express.NextFunction) => {
         let { status = 500, message = "Server Error" } = err;
         res.status(status);
-
         // TODO: JSON response if requested in request
         res.json({
           message,
@@ -130,7 +129,6 @@ export class Server {
         let { status = 500, message = "Server Error" } = err;
         res.status(status);
         // TODO: JSON response if requested in request
-        res.json({ message: err.message });
         res.json({
           message
         });
