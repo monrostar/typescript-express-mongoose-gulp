@@ -13,6 +13,7 @@
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "bcrypt": "^1.0.2",
+    "bluebird": "^3.4.7",
     "body-parser": "^1.16.1",
     "chai": "^3.5.0",
     "errorhandler": "^1.5.0",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^1.0.0",
+    "@types/bluebird": "^3.0.37",
     "@types/body-parser": "0.0.33",
     "@types/chai": "^3.4.35",
     "@types/debug": "0.0.29",
@@ -51,6 +53,7 @@
     "@types/source-map-support": "^0.2.28",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
+    "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^3.1.0",
     "gulp-sequence": "^0.4.6",

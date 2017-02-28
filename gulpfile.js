@@ -11,6 +11,7 @@ var gulp            = require("gulp"),
     sourcemaps      = require('gulp-sourcemaps'),
     sass            = require('gulp-sass'),
     autoprefixer    = require('gulp-autoprefixer'),
+    livereload          = require('gulp-livereload'),
     rimraf          = require('rimraf'),
     www;
 

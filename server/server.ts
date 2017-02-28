@@ -1,18 +1,22 @@
 import * as errorHandler from "errorhandler";
 require("source-map-support").install();
+import config from "./config/index";
 
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import * as fs from "fs-promise-tsc";
+import * as morgan from "morgan";
+
+import mongoose = require("mongoose");
+import * as Bluebird from "bluebird";
 
 // Declare middleware
 import TokenMiddleware from "./middleware/token.middleware";
 
 // Declare routes
 import { Index } from "./routes/";
-import morgan = require("morgan");
 
 
 export class Server {
@@ -23,6 +27,17 @@ export class Server {
 
   assets : any;
 
+  private connectMongoose() {
+
+    mongoose.Promise = Bluebird;
+    mongoose.connect(config.database, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`Connected to MongoDb ${config.database}`);
+    });
+
+  }
 
   private expressConfig() {
 
@@ -75,6 +90,9 @@ export class Server {
     }
     //configure application
     this.expressConfig();
+
+    //configure database
+    this.connectMongoose();
 
     //add routes
     this.routes();
