@@ -1,3 +1,4 @@
+import e = require("express");
 require("source-map-support").install();
 import config from "./config/index";
 
@@ -37,38 +38,44 @@ export class Server {
     mongoose.Promise = Bluebird;
 
     //connect to mongoose
-    this._connection = mongoose.createConnection(config.database);
+    mongoose.connect(config.database.url, (err) => {
+      if (err) {
+        console.log(`Mongoose connected err stack trace: ${err}`);
+      }
+    });
+
+    this._connection = mongoose.connection;
 
     // CONNECTION EVENTS
     // When successfully connected
 
-      this._connection.on("connected", () => {
-        console.log(`Mongoose default connection open to  ${config.database}`);
-      });
+    this._connection.on("connected", () => {
+      console.log(`Mongoose default connection open to  ${config.database.url}`);
+    });
 
-      // If the connection throws an error
-      this._connection.on("error", (parameters : { err : any }) => {
-        let err = parameters.err;
-        console.log(`Mongoose default connection error: ${err}`);
-      });
+    // If the connection throws an error
+    this._connection.on("error", (parameters : { err : any }) => {
+      let err = parameters.err;
+      console.log(`Mongoose default connection error: ${err}`);
+    });
 
-      // When the connection is disconnected
-      this._connection.on("disconnected", () => {
-        console.log(`Mongoose default connection disconnected`);
-      });
+    // When the connection is disconnected
+    this._connection.on("disconnected", () => {
+      console.log(`Mongoose default connection disconnected`);
+    });
 
-      // When the connection is reconnected
-      this._connection.on("reconnected", () => {
-        console.log(`Mongoose default connection is reconnected`);
-      });
+    // When the connection is reconnected
+    this._connection.on("reconnected", () => {
+      console.log(`Mongoose default connection is reconnected`);
+    });
 
-      // If the Node process ends, close the Mongoose connection
-      process.on("SIGINT", () => {
-        this._connection.close(() => {
-          console.log(`Mongoose default connection disconnected through app termination`);
-          process.exit(0);
-        });
+    // If the Node process ends, close the Mongoose connection
+    process.on("SIGINT", () => {
+      this._connection.close(() => {
+        console.log(`Mongoose default connection disconnected through app termination`);
+        process.exit(0);
       });
+    });
 
   }
 
