@@ -57,7 +57,8 @@
     "use-strict": false,
     "variable-name": [
       true,
-      "allow-leading-underscore"
+      "allow-leading-underscore",
+      "allow-pascal-case"
     ],
     "whitespace": [
       true,

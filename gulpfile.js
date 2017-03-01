@@ -11,9 +11,9 @@ var gulp            = require("gulp"),
     sourcemaps      = require('gulp-sourcemaps'),
     sass            = require('gulp-sass'),
     autoprefixer    = require('gulp-autoprefixer'),
-    livereload          = require('gulp-livereload'),
-    rimraf          = require('rimraf'),
-    www;
+    livereload      = require('gulp-livereload'),
+    rimraf          = require('rimraf')
+  ;
 
 //www
 gulp.task('default', ['www']);
@@ -23,7 +23,7 @@ gulp.task('www', ['serve', 'www-watch', 'client-watch', 'public-watch-sass', 'st
 
 gulp.task('serve', ['build-dist'], function () {
   nodemon({
-    script: './dist/server/www',
+    script: './dist/server/server',
     ext   : 'js',
   }).on('restart', function () {
     setTimeout(function () {
