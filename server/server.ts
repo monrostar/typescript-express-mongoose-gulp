@@ -1,13 +1,13 @@
+
+import MiddlewaresBase = require("./config/middlewares/base/middelwares-base");
 require("source-map-support").install();
 import express = require("express");
 import http = require("http");
-import Middlewares = require("./config/middlewares/base/MiddlewaresBase");
-
 let app  = express();
 const port = normalizePort(process.env.PORT || 3000);
 app.set("port", port);
 
-app.use(Middlewares.configuration);
+app.use(MiddlewaresBase.configuration);
 
 const httpServer = http.createServer(app);
 httpServer.listen(port);

@@ -8,7 +8,6 @@ interface IUserModel extends mongoose.Document {
   email : string;
   password : string;
   achievements : string;
-  amountPeopleSaved: number;
 }
 
 export = IUserModel;

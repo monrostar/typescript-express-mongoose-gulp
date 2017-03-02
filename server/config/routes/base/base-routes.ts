@@ -1,10 +1,10 @@
 import express = require("express");
-import UserRoutes = require("./../UserRoutes");
+import UserRoutes = require("../user-routes");
 let app = express();
 class BaseRoutes {
 
   get routes() {
-    app.use("/", new UserRoutes().routes);
+    app.use("/user", new UserRoutes().routes);
     return app;
   }
 }

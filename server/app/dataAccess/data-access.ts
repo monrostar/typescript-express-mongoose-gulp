@@ -21,7 +21,6 @@ class DataAccess {
 
     this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING);
 
-
     this.mongooseConnection.on("connected", () => {
       console.log(`Mongoose default connection open to  ${Constants.DB_CONNECTION_STRING}`);
     });

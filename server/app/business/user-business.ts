@@ -1,7 +1,7 @@
-import UserModel = require("../model/UserModel");
-import IUserModel = require("../model/interfaces/IUserModel");
-import IUserBusiness = require("./interfaces/IUserBusiness");
-import UserRepository = require("../repository/UserRepository");
+import UserModel = require("../model/user-model");
+import IUserModel = require("../model/interfaces/i-user-model");
+import IUserBusiness = require("./interfaces/i-user-business");
+import UserRepository = require("../repository/user-repository");
 
 
 class UserBusiness implements IUserBusiness {

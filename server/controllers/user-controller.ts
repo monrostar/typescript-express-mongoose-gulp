@@ -1,16 +1,16 @@
 import express = require("express");
-import IBaseController = require("./interfaces/base/BaseController");
-import UserBusiness = require("../app/business/UserBusiness");
-import IUserModel = require("../app/model/interfaces/IUserModel");
+import IBaseController = require("./interfaces/base/base-controller");
+import UserBusiness = require("../app/business/user-business");
+import IUserModel = require("../app/model/interfaces/i-user-model");
 
 class UserController implements IBaseController <UserBusiness> {
 
   create(req : express.Request, res : express.Response) : void {
-    try {
 
-      let hero : IUserModel = <IUserModel>req.body;
-      let heroBusiness      = new UserBusiness();
-      heroBusiness.create(hero, (error, result) => {
+    try {
+      let user : IUserModel = <IUserModel>req.body;
+      let userBusiness      = new UserBusiness();
+      userBusiness.create(user, (error, result) => {
         if (error) {
           res.send({ "error": "error" });
         } else {
@@ -27,10 +27,10 @@ class UserController implements IBaseController <UserBusiness> {
 
   update(req : express.Request, res : express.Response) : void {
     try {
-      let hero : IUserModel = <IUserModel>req.body;
+      let user : IUserModel = <IUserModel>req.body;
       let _id : string      = req.params._id;
-      let heroBusiness      = new UserBusiness();
-      heroBusiness.update(_id, hero, (error, result) => {
+      let userBusiness      = new UserBusiness();
+      userBusiness.update(_id, user, (error, result) => {
         if (error) {
           res.send({ "error": "error" });
         } else {
@@ -48,8 +48,8 @@ class UserController implements IBaseController <UserBusiness> {
     try {
 
       let _id : string = req.params._id;
-      let heroBusiness = new UserBusiness();
-      heroBusiness.delete(_id, (error, result) => {
+      let userBusiness = new UserBusiness();
+      userBusiness.delete(_id, (error, result) => {
         if (error) {
           res.send({ "error": "error" });
         } else {
@@ -65,8 +65,8 @@ class UserController implements IBaseController <UserBusiness> {
   retrieve(req : express.Request, res : express.Response) : void {
     try {
 
-      var heroBusiness = new UserBusiness();
-      heroBusiness.retrieve((error, result) => {
+      let userBusiness = new UserBusiness();
+      userBusiness.retrieve((error, result) => {
         if (error) {
           res.send({ "error": "error" });
         } else {
@@ -81,9 +81,9 @@ class UserController implements IBaseController <UserBusiness> {
 
   findById(req : express.Request, res : express.Response) : void {
     try {
-      var _id : string = req.params._id;
-      var heroBusiness = new UserBusiness();
-      heroBusiness.findById(_id, (error, result) => {
+      let _id : string = req.params._id;
+      let userBusiness = new UserBusiness();
+      userBusiness.findById(_id, (error, result) => {
         if (error) {
           res.send({ "error": "error" });
         } else {

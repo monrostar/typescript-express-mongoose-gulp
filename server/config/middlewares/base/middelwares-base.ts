@@ -3,10 +3,10 @@ import bodyParser = require("body-parser");
 import morgan = require("morgan");
 import path = require("path");
 
-import MethodOverride = require("./../MethodOverride");
-import BaseRoutes = require("./../../routes/base/BaseRoutes");
-import ErrorHandler = require("../ErrorHandler");
+import MethodOverride = require("../method-override");
+import BaseRoutes = require("../../routes/base/base-routes");
 import * as serveFavicon from "serve-favicon";
+import ErrorHandler = require("../error-handler");
 
 
 class MiddlewaresBase {
@@ -15,7 +15,7 @@ class MiddlewaresBase {
     let app = express();
     app.use(morgan("tiny"));
 
-    app.set("views", path.join(__dirname, "../views"));
+    app.set("views", path.join(__dirname, "../../../../views"));
     app.set("view engine", "pug");
 
     app.use(bodyParser.json());
@@ -32,9 +32,11 @@ class MiddlewaresBase {
     // TODO express-session
 
     app.use(MethodOverride.configuration());
+
     app.use(new BaseRoutes().routes);
 
-    app.use(new ErrorHandler(app).init);
+    let errorHandler = new ErrorHandler(app).init();
+
     return app;
   }
 }

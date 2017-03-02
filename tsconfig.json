@@ -5,12 +5,8 @@
     "sourceMap": true,
     "rootDir": ".",
     "outDir": "dist",
-    "noImplicitAny": true,
-    "paths": {
-      "app/*": ["./server/app/*"],
-      "config/*": [".server/config/*"],
-      "controllers/*": ["./server/controllers/*"]
-    }
+    "baseUrl": ".",
+    "noImplicitAny": true
   },
   "exclude": [
     "node_modules",

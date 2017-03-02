@@ -1,5 +1,5 @@
-import IRead = require("../interfaces/base/Read");
-import IWrite = require("../interfaces/base/Write");
+import IRead = require("../interfaces/base/i-read");
+import IWrite = require("../interfaces/base/i-write");
 
 import mongoose = require("mongoose");
 
