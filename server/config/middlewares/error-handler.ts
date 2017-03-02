@@ -33,6 +33,8 @@ class ErrorHandler {
         });
       });
     }
+
+    return this;
   }
 
 }
