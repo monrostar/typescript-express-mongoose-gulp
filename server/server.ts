@@ -3,8 +3,11 @@ import MiddlewaresBase = require("./config/middlewares/base/middelwares-base");
 require("source-map-support").install();
 import express = require("express");
 import http = require("http");
+import { getServerConfigs } from "./config/env/index";
 let app  = express();
-const port = normalizePort(process.env.PORT || 3000);
+
+let serverConfig = getServerConfigs();
+const port = normalizePort(serverConfig.port || 3000);
 app.set("port", port);
 
 app.use(MiddlewaresBase.configuration);

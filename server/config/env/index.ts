@@ -21,6 +21,7 @@ export interface IServerConfigurations {
   plugins : Array<string>;
   jwtSecret : string;
   jwtExpiration : string;
+  credit: Array<number>;
 }
 
 export interface IDataSession {
