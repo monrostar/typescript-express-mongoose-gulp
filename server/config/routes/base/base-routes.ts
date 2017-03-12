@@ -4,7 +4,8 @@ let app = express();
 class BaseRoutes {
 
   get routes() {
-    app.use("/user", new UserRoutes().routes);
+    app.use("api/user", new UserRoutes().routes);
+    app.use("api/auth", new UserRoutes().routes);
     return app;
   }
 }

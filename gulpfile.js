@@ -48,7 +48,7 @@ gulp.task('public-watch-sass', function () {
   return gulp.watch(['public/**/*.scss'], ["public-compile-sass"]);
 });
 
-var filesToMove = ['public/**/*', 'views/**/*', '!public/sass/**/*', '!public/sass'];
+var filesToMove = ['public/**/*', 'views/**/*', 'server/**/*.json', '!public/sass/**/*', '!public/sass'];
 
 gulp.task("move-files", function () {
   return gulp.src(filesToMove, { base: '.' })

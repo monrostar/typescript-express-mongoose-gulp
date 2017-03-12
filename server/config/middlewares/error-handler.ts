@@ -6,6 +6,7 @@ class ErrorHandler {
 
   init() : any {
 
+    // 404
     this._app.use((req : express.Request, res : express.Response, next : express.NextFunction) => {
       res.status(404);
       // TODO: JSON response if requested in request
@@ -14,6 +15,7 @@ class ErrorHandler {
       });
     });
 
+    // else errors
     if (this._app.get("env") === "development") {
       this._app.use((err : any, req : express.Request, res : express.Response, next : express.NextFunction) => {
         let { status = 500, message = "Server Error" } = err;

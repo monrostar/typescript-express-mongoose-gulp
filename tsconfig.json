@@ -2,11 +2,19 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "rootDir": ".",
     "outDir": "dist",
     "baseUrl": ".",
-    "noImplicitAny": true
+    "listFiles": true,
+    "isolatedModules": false,
+    "moduleResolution": "node",
+    "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [
     "node_modules",

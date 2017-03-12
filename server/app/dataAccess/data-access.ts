@@ -1,5 +1,5 @@
 import Mongoose = require("mongoose");
-import Constants = require("../../config/constants/constants");
+import { getDatabaseConfig } from "../../config/env/index";
 
 class DataAccess {
   static mongooseInstance : any;
@@ -10,6 +10,9 @@ class DataAccess {
   }
 
   static connect() : Mongoose.Connection {
+
+    let dbConfig = getDatabaseConfig();
+
     if (this.mongooseInstance) {
       return this.mongooseInstance;
     }
@@ -19,10 +22,10 @@ class DataAccess {
       console.log("Connect to an mongodb is opened.");
     });
 
-    this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING);
+    this.mongooseInstance = Mongoose.connect(dbConfig.connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      console.log(`Mongoose default connection open to  ${Constants.DB_CONNECTION_STRING}`);
+      console.log(`Mongoose default connection open to  ${dbConfig.connectionString}`);
     });
 
     // If the connection throws an error

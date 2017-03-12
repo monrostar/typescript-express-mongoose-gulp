@@ -1,0 +1,45 @@
+{
+    "app": {
+        "host": "localhost",
+        "port": 8023,
+        "schema": "http",
+        "url": "http://leagueplay.ru",
+        "jwtSecret": "ANCDU*A2313SD18213gd18cH*SACJm3668*&T#$)jsADC_Nd9-1ijhAHIDHc)ADHc82AS&&#$&!cSF",
+        "jwtExpiration": "1h",
+        "plugins": [
+            "logger",
+            "swagger",
+            "jwt-auth"
+        ]
+    },
+
+    "database": {
+        "connectionString": "mongodb://localhost/prod_db"
+    },
+
+    "session": {
+        "secret": "it:demo:secret",
+        "key": "sid",
+        "cookie": {
+            "path": "/",
+            "httpOnly": true,
+            "maxAge": null
+        }
+    },
+
+    "memcached": {
+        "hosts": ["127.0.0.1:11211"],
+        "prefix": "it:demo:023:"
+    },
+
+    "auth": {
+        "fb": {
+            "app_id": 0,
+            "secret": "secret"
+        },
+        "vk": {
+            "app_id": 0,
+            "secret": "secret"
+        }
+    }
+}
