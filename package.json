@@ -5,8 +5,9 @@
   "description": "Social summoner network",
   "main": "dist/www.js",
   "scripts": {
-    "start": "set NODE_ENV=development&&gulp",
-    "test": "mocha dist/test/*.js"
+    "win": "set NODE_ENV=development&&gulp",
+    "lin": "export NODE_ENV=development&&gulp",
+    "test": "export NODE_ENV=development&&mocha dist/test/*.js"
   },
   "authors": [
     "Nitsenko Evgeniy <nitsenko94@gmail.com>"
