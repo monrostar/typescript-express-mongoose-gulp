@@ -16,6 +16,9 @@
     "moduleResolution": "node",
     "suppressImplicitAnyIndexErrors": true
   },
+  "include": [
+    "./server/**/*"
+  ],
   "exclude": [
     "node_modules",
     "bower_components",
