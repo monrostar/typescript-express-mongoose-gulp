@@ -10,36 +10,17 @@ class MiddlewareCluster {
         this.numReqs = 0;
     }
 
-    protected messageHandler(parameters: {msg: any}) {
-        let msg = parameters.msg;
-        if (typeof (msg) !== "undefined" && msg.cmd && msg.cmd === "notifyRequest") {
-            this.numReqs += 1;
-        }
-    }
-
     public init() : void {
 
         if (!cluster.isMaster) {
             return;
         }
 
-        // Keep track of http requests
-        setInterval(() => {
-            console.log(`numReqs = ${this.numReqs}`);
-        }, 1000);
-
         console.log(`Master ${process.pid} is running`);
 
         // Fork workers.
         for (let i = 0; i < this.numCPUs; i++) {
             cluster.fork();
-        }
-
-        for (const id in cluster.workers) {
-            if (cluster.workers.hasOwnProperty(id)) {
-                console.log();
-                cluster.workers[id].on("message", this.messageHandler);
-            }
         }
 
         cluster.on("exit", (worker, code, signal) => {
@@ -52,15 +33,21 @@ class MiddlewareCluster {
             }
         });
 
-        cluster.on("disconnect", (err) => {
-            // Worker has disconnected
+        cluster.on("disconnect", (worker, code, signal) => {
+            // В случае отключения IPC запустить нового рабочего (мы узнаем про это подробнее далее)
+            // logger.log(`Worker ${worker.id} died`);
+            // запишем в лог отключение сервера, что бы разработчики обратили внимание.
+            // cluster.fork();
+            // Создадим рабочего
         });
 
+        cluster.on("online", (worker) => {
+            //Если рабочий соединился с нами запишем это в лог!
+            // logger.log(`Worker ${worker.id} running`);
+        });
         cluster.on("listening", (address) => {
             // Worker is listening
         });
-
-        console.log(`Worker ${process.pid} started`);
     }
 }
 
