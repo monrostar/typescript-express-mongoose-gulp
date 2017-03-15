@@ -3,9 +3,9 @@ import Cluster = require("./cluster");
 import Bin = require("./bin");
 
 if (require("cluster").isMaster) {
-  let cluster = new Cluster();
+  new Cluster();
 } else {
-  let bin = new Bin();
+  new Bin();
 }
 
 
