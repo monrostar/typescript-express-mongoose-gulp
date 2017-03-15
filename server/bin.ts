@@ -9,8 +9,8 @@ class Bin {
   protected app : express.Application;
 
   constructor() {
-    this.app         = express();
-    this.port        = Bin.normalizePort(getServerConfigs().port || 3000);
+    this.app  = express();
+    this.port = Bin.normalizePort(getServerConfigs().port || 3000);
     this.app.set("port", this.port);
     this.init();
   }
@@ -35,8 +35,8 @@ class Bin {
     httpServer.listen(this.port);
     httpServer.on("error", this.onError);
     httpServer.on("listening", () => {
-      const addr   = httpServer.address();
-      const bind   = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+      const addr = httpServer.address();
+      const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
 
       winston.log("info", `Listening on ${bind}`);
     });
