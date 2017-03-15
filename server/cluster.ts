@@ -49,12 +49,14 @@ class Cluster {
     });
 
     cluster.on("disconnect", (worker, code, signal) => {
-      // В случае отключения IPC запустить нового рабочего (мы узнаем про это подробнее далее)
-      // logger.log(`Worker ${worker.id} died`);
-      winston.log("info", `Worker ${worker.id} died`);
+      // В случае отключения IPC запустить нового рабочего
+
       // запишем в лог отключение сервера, что бы разработчики обратили внимание.
-      //cluster.fork();
+      winston.log("info", `Worker ${worker.id} died`);
+      // logger.log(`Worker ${worker.id} died`);
+
       // Создадим рабочего
+      cluster.fork();
     });
 
     cluster.on("online", (worker) => {
