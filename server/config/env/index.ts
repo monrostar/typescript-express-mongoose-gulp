@@ -31,7 +31,8 @@ export interface IDataSession {
 }
 
 export interface IDataConfiguration {
-  connectionString : string;
+  mongodb : {connectionString};
+  pg      : {user, database, password, host, port, max, idleTimeoutMillis};
 }
 
 export interface IDataMemcached {

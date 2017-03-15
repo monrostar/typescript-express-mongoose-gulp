@@ -22,10 +22,10 @@ class DataAccess {
       console.log("Connect to an mongodb is opened.");
     });
 
-    this.mongooseInstance = Mongoose.connect(dbConfig.connectionString);
+    this.mongooseInstance = Mongoose.connect(dbConfig.mongodb.connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      console.log(`Mongoose default connection open to  ${dbConfig.connectionString}`);
+      console.log(`Mongoose default connection open to  ${dbConfig.mongodb.connectionString}`);
     });
 
     // If the connection throws an error
