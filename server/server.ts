@@ -5,9 +5,8 @@ import express = require("express");
 import http = require("http");
 import {getServerConfigs} from "./config/env/index";
 import cluster = require("cluster");
-import os = require("os");
+import MiddlewareCluster = require("./config/middlewares/base/middleware-cluster");
 
-const numCPUs = os.cpus().length;
 let app  = express();
 let serverConfig = getServerConfigs();
 
@@ -16,31 +15,61 @@ app.set("port", port);
 
 app.use(MiddlewaresBase.configuration);
 
-const httpServer = http.createServer(app);
 
 if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
+  let cluster = new MiddlewareCluster();
+  cluster.init();
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-
-  cluster.on("exit", (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
 } else {
+
+  // TODO init server Class
+  const httpServer = http.createServer(app);
   httpServer.listen(port);
   httpServer.on("error", onError);
   httpServer.on("listening", onListening);
+  // notify master about the request
 
   console.log(`Worker ${process.pid} started`);
-}
 
-process.on("SIGINT", () => {
-  httpServer.close();
-  process.exit();
-});
+  process.on("SIGINT", () => {
+    httpServer.close();
+    process.exit();
+  });
+
+
+  function onError(error: any): void {
+    if (error.syscall !== "listen") {
+      throw error;
+    }
+
+    const bind = typeof port === "string"
+      ? `Pipe ${port}`
+      : `Port ${port}`;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case "EACCES":
+        console.error(`${bind} requires elevated privileges`);
+        process.exit(1);
+        break;
+      case "EADDRINUSE":
+        console.error(`${bind} is already in use`);
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  }
+
+  function onListening(): void {
+    const addr = httpServer.address();
+    const bind = typeof addr === "string"
+      ? `pipe ${addr}`
+      : `port ${addr.port}`;
+    console.log(`Listening on ${bind}`);
+  }
+
+}
 
 function normalizePort(val: any): any {
   const port = parseInt(val, 10);
@@ -58,35 +87,4 @@ function normalizePort(val: any): any {
   return false;
 }
 
-function onError(error: any): void {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
-
-  const bind = typeof port === "string"
-    ? `Pipe ${port}`
-    : `Port ${port}`;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case "EACCES":
-      console.error(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(`${bind} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-function onListening(): void {
-  const addr = httpServer.address();
-  const bind = typeof addr === "string"
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`);
-}
 
