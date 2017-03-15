@@ -10,11 +10,26 @@
             "logger",
             "swagger",
             "jwt-auth"
-        ]
+        ],
+        "credit": {
+            "initialLimit": 100,
+            "initialDays": 1
+        }
     },
 
     "database": {
-        "connectionString": "mongodb://localhost/prod_db"
+        "mongodb" : {
+            "connectionString": "mongodb://localhost/prod_db"
+        },
+        "pg": {
+            "user": "foo",
+            "database": "my_db",
+            "password": "secret",
+            "host": "localhost",
+            "port": 5432,
+            "max": 10,
+            "idleTimeoutMillis": 30000
+        }
     },
 
     "session": {
