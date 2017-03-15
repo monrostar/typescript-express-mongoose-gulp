@@ -21,10 +21,11 @@ class MiddlewareCluster {
         this.numCPUs = os.cpus().length;
     }
     this.numReqs = 0;
+    this.init();
   }
 
 
-  public init() : void {
+  protected init() : void {
 
     if (!cluster.isMaster) {
       return;
@@ -52,7 +53,7 @@ class MiddlewareCluster {
       // logger.log(`Worker ${worker.id} died`);
       winston.log("info", `Worker ${worker.id} died`);
       // запишем в лог отключение сервера, что бы разработчики обратили внимание.
-      cluster.fork();
+      //cluster.fork();
       // Создадим рабочего
     });
 

@@ -2,6 +2,7 @@ import express = require("express");
 import IBaseController = require("./interfaces/base/base-controller");
 import UserBusiness = require("../app/business/user-business");
 import IUserModel = require("../app/model/interfaces/i-user-model");
+import * as winston from "winston";
 
 class AuthController implements IBaseController <UserBusiness> {
 
