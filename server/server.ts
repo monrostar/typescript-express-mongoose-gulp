@@ -1,5 +1,5 @@
 require("source-map-support").install();
-import MiddlewareCluster = require("./config/middlewares/base/middleware-cluster");
+import MiddlewareCluster = require("./cluster");
 import Bin = require("./bin");
 
 if (require("cluster").isMaster) {

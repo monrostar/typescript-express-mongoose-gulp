@@ -1,10 +1,10 @@
 import cluster = require("cluster");
 import os = require("os");
-import { getServerConfigs } from "../../env/index";
+import { getServerConfigs } from "./config/env/index";
 import { isNumber } from "util";
 import * as winston from "winston";
 
-class MiddlewareCluster {
+class Cluster {
   private numCPUs : number;
   private numReqs : number;
 
@@ -68,5 +68,5 @@ class MiddlewareCluster {
   }
 }
 
-Object.seal(MiddlewareCluster);
-export = MiddlewareCluster;
+Object.seal(Cluster);
+export = Cluster;
