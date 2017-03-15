@@ -4,6 +4,10 @@ require("source-map-support").install();
 import express = require("express");
 import http = require("http");
 import {getServerConfigs} from "./config/env/index";
+import cluster = require("cluster");
+import os = require("os");
+
+const numCPUs = os.cpus().length;
 let app  = express();
 let serverConfig = getServerConfigs();
 
@@ -13,9 +17,25 @@ app.set("port", port);
 app.use(MiddlewaresBase.configuration);
 
 const httpServer = http.createServer(app);
-httpServer.listen(port);
-httpServer.on("error", onError);
-httpServer.on("listening", onListening);
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  httpServer.listen(port);
+  httpServer.on("error", onError);
+  httpServer.on("listening", onListening);
+
+  console.log(`Worker ${process.pid} started`);
+}
 
 process.on("SIGINT", () => {
   httpServer.close();
