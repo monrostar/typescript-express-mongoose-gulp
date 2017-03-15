@@ -10,11 +10,11 @@ class Cluster {
 
   constructor() {
     let cpuCores = getServerConfigs().cpuCores;
-    switch (cpuCores) {
-      case "*" :
+    switch (true) {
+      case (cpuCores === "*") :
         this.numCPUs = os.cpus().length;
         break;
-      case isNumber:
+      case (cpuCores > 0):
         this.numCPUs = cpuCores;
         break;
       default :

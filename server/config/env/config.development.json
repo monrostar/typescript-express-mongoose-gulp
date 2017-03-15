@@ -1,6 +1,6 @@
 {
   "app": {
-    "cpuCores": "*",
+    "cpuCores": 1,
     "host": "localhost",
     "port": 8023,
     "schema": "http",
