@@ -13,6 +13,7 @@ class MiddlewaresBase {
 
   static get configuration() {
     let app = express();
+
     app.use(morgan("tiny"));
 
     app.set("views", path.join(__dirname, "../../../../views"));

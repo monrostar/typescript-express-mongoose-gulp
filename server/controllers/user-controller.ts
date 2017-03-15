@@ -19,7 +19,7 @@ class UserController implements IBaseController <UserBusiness> {
       });
     } catch (e) {
 
-      console.log(e);
+      winston.log("info", e);
       res.send({ "error": "error in your request" });
 
     }
@@ -38,7 +38,7 @@ class UserController implements IBaseController <UserBusiness> {
         }
       });
     } catch (e) {
-      console.log(e);
+      winston.log("info", e);
       res.send({ "error": "error in your request" });
 
     }
@@ -57,7 +57,7 @@ class UserController implements IBaseController <UserBusiness> {
         }
       });
     } catch (e) {
-      console.log(e);
+      winston.log("info", e);
       res.send({ "error": "error in your request" });
     }
   }
@@ -74,7 +74,7 @@ class UserController implements IBaseController <UserBusiness> {
         }
       });
     } catch (e) {
-      console.log(e);
+      winston.log("info", e);
       res.send({ "error": "error in your request" });
     }
   }
@@ -91,7 +91,7 @@ class UserController implements IBaseController <UserBusiness> {
         }
       });
     } catch (e) {
-      console.log(e);
+      winston.log("info", e);
       res.send({ "error": "error in your request" });
 
     }

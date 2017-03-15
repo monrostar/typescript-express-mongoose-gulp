@@ -1,5 +1,6 @@
 import Mongoose = require("mongoose");
 import { getDatabaseConfig } from "../../config/env/index";
+import * as winston from "winston";
 
 class DataAccess {
   static mongooseInstance : any;
@@ -19,35 +20,35 @@ class DataAccess {
 
     this.mongooseConnection = Mongoose.connection;
     this.mongooseConnection.once("open", () => {
-      console.log("Connect to an mongodb is opened.");
+      winston.log("info", "Connect to an mongodb is opened.");
     });
 
     this.mongooseInstance = Mongoose.connect(dbConfig.mongodb.connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      console.log(`Mongoose default connection open to  ${dbConfig.mongodb.connectionString}`);
+      winston.log("info", `Mongoose default connection open to  ${dbConfig.mongodb.connectionString}`);
     });
 
     // If the connection throws an error
     this.mongooseConnection.on("error", (parameters : { err : any }) => {
       let err = parameters.err;
-      console.log(`Mongoose default connection error: ${err}`);
+      winston.log("info", `Mongoose default connection error: ${err}`);
     });
 
     // When the connection is disconnected
     this.mongooseConnection.on("disconnected", () => {
-      console.log(`Mongoose default connection disconnected.`);
+      winston.log("info", `Mongoose default connection disconnected.`);
     });
 
     // When the connection is reconnected
     this.mongooseConnection.on("reconnected", () => {
-      console.log(`Mongoose default connection is reconnected`);
+      winston.log("info", `Mongoose default connection is reconnected`);
     });
 
     // If the Node process ends, close the Mongoose connection
     process.on("SIGINT", () => {
       this.mongooseConnection.close(() => {
-        console.log(`Mongoose default connection disconnected through app termination`);
+        winston.log("info", `Mongoose default connection disconnected through app termination`);
         process.exit(0);
       });
     });

@@ -1,5 +1,6 @@
 import * as nconf from "nconf";
 import * as path from "path";
+import * as winston from "winston";
 
 const configs = new nconf.Provider({
   env: true,
@@ -10,11 +11,12 @@ const configs = new nconf.Provider({
   }
 });
 
-console.log(`Server use ${process.env.NODE_ENV} configurations`);
+winston.log("info", `Server use ${process.env.NODE_ENV} configurations`);
 
 
 // interfaces
 export interface IServerConfigurations {
+  cpuCores: any;
   port : number;
   schema : string;
   url : string;
