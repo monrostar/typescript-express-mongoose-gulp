@@ -38,7 +38,10 @@
       "path": "/",
       "httpOnly": true,
       "maxAge": null
-    }
+    },
+    "proxy": true,
+    "resave": true,
+    "saveUninitialized": true
   },
   "memcached": {
     "hosts": [
@@ -49,11 +52,13 @@
   "auth": {
     "fb": {
       "app_id": 0,
-      "secret": "secret"
+      "secret": "secret",
+      "callbackURL": "http://127.0.0.1:3000/auth/fb/callback"
     },
     "vk": {
       "app_id": 0,
-      "secret": "secret"
+      "secret": "secret",
+      "callbackURL": "http://127.0.0.1:3000/auth/vk/callback"
     }
   }
 }

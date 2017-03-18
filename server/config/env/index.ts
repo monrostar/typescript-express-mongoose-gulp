@@ -30,6 +30,9 @@ export interface IDataSession {
   secret : string;
   key : string;
   cookie : Array<any>;
+  proxy : boolean;
+  resave : boolean;
+  saveUninitialized : boolean;
 }
 
 export interface IDataConfiguration {
@@ -69,3 +72,4 @@ export function getAuthConfigs() : IDataMemcached {
   return configs.get("auth");
 }
 
+export default configs;

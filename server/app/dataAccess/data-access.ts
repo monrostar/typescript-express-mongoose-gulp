@@ -32,12 +32,12 @@ class DataAccess {
     // If the connection throws an error
     this.mongooseConnection.on("error", (parameters : { err : any }) => {
       let err = parameters.err;
-      winston.log("info", `Mongoose default connection error: ${err}`);
+      winston.log("error", `Mongoose default connection error: ${err}`);
     });
 
     // When the connection is disconnected
     this.mongooseConnection.on("disconnected", () => {
-      winston.log("info", `Mongoose default connection disconnected.`);
+      winston.log("warning", `Mongoose default connection disconnected.`);
     });
 
     // When the connection is reconnected
