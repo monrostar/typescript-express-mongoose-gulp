@@ -17,16 +17,16 @@ class DataAccess {
     if (this.mongooseInstance) {
       return this.mongooseInstance;
     }
-
+    let connectionString = dbConfig.mongodb.connectionString;
     this.mongooseConnection = Mongoose.connection;
     this.mongooseConnection.once("open", () => {
       winston.log("info", "Connect to an mongodb is opened.");
     });
 
-    this.mongooseInstance = Mongoose.connect(dbConfig.mongodb.connectionString);
+    this.mongooseInstance = Mongoose.connect(connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      winston.log("info", `Mongoose default connection open to  ${dbConfig.mongodb.connectionString}`);
+      winston.log("info", `Mongoose default connection open to  ${connectionString}`);
     });
 
     // If the connection throws an error
@@ -37,6 +37,7 @@ class DataAccess {
 
     // When the connection is disconnected
     this.mongooseConnection.on("disconnected", () => {
+      this.mongooseInstance = Mongoose.connect(connectionString);
       winston.log("warning", `Mongoose default connection disconnected.`);
     });
 
