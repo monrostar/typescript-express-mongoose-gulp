@@ -18,9 +18,7 @@ class UserSchema {
       achievements: { type: String, required: false }
     });
 
-    schema.pre("save", function (parameters : { next : any }) {
-      let next = parameters.next;
-
+    schema.pre("save", function (next : any) {
       if (this._doc) {
         let doc = <IUserModel>this._doc;
         let now = new Date();
@@ -31,7 +29,7 @@ class UserSchema {
 
         doc.modifiedAt = now;
 
-        if (!doc.isModified("password")) {
+        if (!this.isModified("password")) {
           return next();
         }
 
@@ -39,7 +37,6 @@ class UserSchema {
       }
 
       next();
-      return this;
     });
 
     return schema;
