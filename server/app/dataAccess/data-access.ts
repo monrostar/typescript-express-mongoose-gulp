@@ -26,7 +26,7 @@ class DataAccess {
     this.mongooseInstance = Mongoose.connect(connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      winston.log("info", `Mongoose default connection open to  ${connectionString}`);
+      winston.log("info", `Mongoose default connection open to ${connectionString}`);
     });
 
     // If the connection throws an error
