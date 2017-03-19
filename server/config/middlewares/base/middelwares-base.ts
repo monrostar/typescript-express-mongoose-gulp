@@ -23,15 +23,13 @@ class MiddlewaresBase {
 
     let sessionOptions = Object(getSessionConfigs());
     if (process.env.NODE_ENV === "production") {
-      let MemcachedStore = memcached(session);
+      let MemcachedStore   = memcached(session);
       sessionOptions.store = new MemcachedStore(getMemcachedConfigs());
     }
 
     app.set("views", path.join(__dirname, "../../../../views"));
     let hbs = exphbs.create({
-      extname: ".hbs",
-      layoutsDir: "../../../../views/layout",
-      partialsDir: ["../../../../views/partials"]
+      extname: ".hbs", layoutsDir: "../../../../views/layout", partialsDir: [ "../../../../views/partials" ]
     });
     app.engine("hbs", hbs.engine);
     app.set("view engine", "hbs");
@@ -45,10 +43,10 @@ class MiddlewaresBase {
 
     app.use(flash());
     // Global flash vars
-    app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    app.use((req : express.Request, res : express.Response, next : express.NextFunction) => {
       res.locals.success_msg = req.flash("success_msg");
-      res.locals.error_msg = req.flash("error_msg");
-      res.locals.error = req.flash("error");
+      res.locals.error_msg   = req.flash("error_msg");
+      res.locals.error       = req.flash("error");
       next();
     });
 
