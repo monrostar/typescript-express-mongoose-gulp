@@ -1,5 +1,5 @@
 import express = require("express");
-import exphbs  = require('express-handlebars');
+import exphbs  = require("express-handlebars");
 import session = require("express-session");
 import memcached = require("connect-memcached");
 import flash = require("connect-flash");
@@ -28,9 +28,13 @@ class MiddlewaresBase {
     }
 
     app.set("views", path.join(__dirname, "../../../../views"));
-    let hbs = exphbs.create({ /* config */ });
-    app.engine('handlebars', hbs.engine);
-    app.set("view engine", "handlebars");
+    let hbs = exphbs.create({
+      extname: ".hbs",
+      layoutsDir: "../../../../views/layout",
+      partialsDir: ["../../../../views/partials"]
+    });
+    app.engine("hbs", hbs.engine);
+    app.set("view engine", "hbs");
 
     app.use(morgan("tiny"));
     app.use(bodyParser.json());
