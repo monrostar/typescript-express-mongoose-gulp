@@ -43,12 +43,6 @@ class UserSchema {
   }
 
 }
+
 let schema = mongooseConnection.model<IUserModel>("Users", UserSchema.schema);
-
-
-//schema.pre("save", next => {
-
-//});
-
-
 export = schema;
