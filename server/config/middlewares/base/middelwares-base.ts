@@ -42,7 +42,15 @@ class MiddlewaresBase {
     app.use(session(sessionOptions));
     app.use(passport.initialize());
     app.use(passport.session());
+
     app.use(flash());
+    // Global flash vars
+    app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+      res.locals.success_msg = req.flash("success_msg");
+      res.locals.error_msg = req.flash("error_msg");
+      res.locals.error = req.flash("error");
+      next();
+    });
 
     // TODO compression
 
