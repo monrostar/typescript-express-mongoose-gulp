@@ -17,16 +17,11 @@
     "suppressImplicitAnyIndexErrors": true
   },
   "include": [
-    "./server/**/*"
+    "server/**/*",
+    "test/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "bower_components",
-    "views",
-    "public",
-    "bin",
-    "dist",
-    "client"
+    "node_modules"
   ],
   "types": [
     "node"

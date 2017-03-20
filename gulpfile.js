@@ -1,27 +1,17 @@
 var gulp            = require("gulp"),
     ts              = require("gulp-typescript"),
-    tsProject       = ts.createProject("tsconfig.json"),
-    clientTsProject = ts.createProject("client/tsconfig.json"),
-    webpack         = require('webpack-stream'),
     nodemon         = require('gulp-nodemon'),
-    spawn           = require('child_process').spawn,
-    mocha           = require('gulp-spawn-mocha'),
     tslint          = require("gulp-tslint"),
-    newer           = require('gulp-newer'),
-    sourcemaps      = require('gulp-sourcemaps'),
-    sass            = require('gulp-sass'),
-    autoprefixer    = require('gulp-autoprefixer'),
-    livereload      = require('gulp-livereload'),
-    rimraf          = require('rimraf')
+    livereload      = require('gulp-livereload')
   ;
 
 //www
 gulp.task('default', ['www']);
-gulp.task('www', ['serve', 'www-watch', 'client-watch', 'public-watch-sass', 'static-move-watch'], function () {
+gulp.task('www', ['serve'], function () {
 
 });
 
-gulp.task('serve', ['build-dist'], function () {
+gulp.task('serve', ['watch', 'json-assets'], function () {
   nodemon({
     script: './dist/server/server',
     ext   : 'js',
@@ -32,47 +22,13 @@ gulp.task('serve', ['build-dist'], function () {
   });
 });
 
-/**
- * Watchers
- */
-gulp.task('www-watch', function () {
-  // restarts the server when server side code changes, or the client side asset map
-  return gulp.watch(['server/**/*.ts', 'dist/assets/webpack-assets.json'], ["compile-typescript"]);
-});
+// pull in the project TypeScript config
+const tsProject = ts.createProject('tsconfig.json');
 
-gulp.task('client-watch', function () {
-  return gulp.watch(['client/**/*.ts', 'client/**/*.tsx'], ["client-compile-typescript"]);
-});
-
-gulp.task('public-watch-sass', function () {
-  return gulp.watch(['public/**/*.scss'], ["public-compile-sass"]);
-});
-
-var filesToMove = ['public/**/*', 'views/**/*', 'server/**/*.json', '!public/sass/**/*', '!public/sass'];
-
-gulp.task("move-files", function () {
-  return gulp.src(filesToMove, { base: '.' })
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('static-move-watch', function () {
-  return gulp.watch(filesToMove, ["move-files"]);
-});
-// END Watchers
-
-
-// Server build
-
-gulp.task("build-dist", ['compile-typescript', 'client-compile-typescript', 'public-compile-sass', 'move-files']);
-
-gulp.task("compile-typescript", ["ts-lint"], function () {
-  var tsResult = tsProject.src()
-    .pipe(sourcemaps.init())
+gulp.task('build-dist', ['ts-lint'], () => {
+  const tsResult = tsProject.src()
     .pipe(tsProject());
-
-  return tsResult.js
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest("dist"));
+  return tsResult.js.pipe(gulp.dest('dist'));
 });
 
 gulp.task("ts-lint", function () {
@@ -85,36 +41,15 @@ gulp.task("ts-lint", function () {
     }));
 });
 
-
-// Client build
-
-gulp.task("client-compile-typescript", ["client-ts-lint"], function () {
-  return clientTsProject.src()
-    .pipe(webpack(require('./webpack.config.js')))
-    .pipe(gulp.dest('dist/assets'));
+gulp.task('watch', ['build-dist'], () => {
+  gulp.watch('server/**/*.ts', ['build-dist']);
+  gulp.watch('server/**/*.json', ['json-assets']);
 });
 
-gulp.task("client-ts-lint", function () {
-  return clientTsProject.src()
-    .pipe(tslint({
-      formatter: "prose"
-    }))
-    .pipe(tslint.report({
-      summarizeFailureOutput: false
-    }));
+gulp.task('json-assets', function() {
+  return gulp.src('server/**/*.json')
+    .pipe(gulp.dest('dist/server'));
 });
-
-
-// Sass compile
-
-gulp.task('public-compile-sass', function () {
-  return gulp.src('./public/sass/index.scss')
-    .pipe(sass({
-      outputStyle: 'compressed'
-    }))
-    .pipe(gulp.dest('dist/public/css/'));
-});
-
 
 //Testing
 gulp.task('test', ["run-tests", "test-watch"]);
