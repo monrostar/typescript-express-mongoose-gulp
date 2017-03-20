@@ -11,7 +11,7 @@ const configs = new nconf.Provider({
   }
 });
 
-winston.log("info", `Server use ${process.env.NODE_ENV} configurations`);
+winston.log("info", `Worker use ${process.env.NODE_ENV} configurations`);
 
 
 // interfaces
