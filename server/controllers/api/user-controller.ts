@@ -1,8 +1,8 @@
 import express = require("express");
-import IBaseController = require("./interfaces/base/base-controller");
-import UserBusiness = require("../app/business/user-business");
+import IBaseController = require("../interfaces/base/base-controller");
+import UserBusiness = require("../../app/business/user-business");
 import * as winston from "winston";
-import IUserModel = require("../app/model/interfaces/i-user-model");
+import IUserModel = require("../../app/model/interfaces/i-user-model");
 
 class UserController implements IBaseController <UserBusiness> {
 

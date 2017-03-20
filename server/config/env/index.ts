@@ -71,5 +71,3 @@ export function getMemcachedConfigs() : IDataMemcached {
 export function getAuthConfigs() : IDataMemcached {
   return configs.get("auth");
 }
-
-export default configs;

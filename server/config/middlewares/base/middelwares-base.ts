@@ -28,11 +28,7 @@ class MiddlewaresBase {
     }
 
     app.set("views", path.join(__dirname, "../../../../views"));
-    let hbs = exphbs.create({
-      extname: ".hbs", layoutsDir: "../../../../views/layout", partialsDir: [ "../../../../views/partials" ]
-    });
-    app.engine("hbs", hbs.engine);
-    app.set("view engine", "hbs");
+    app.set("view engine", "pug");
 
     app.use(morgan("tiny"));
     app.use(bodyParser.json());
@@ -52,10 +48,7 @@ class MiddlewaresBase {
 
     // TODO compression
 
-    app.use(express.static(path.join(__dirname, "../public")));
-    app.use("/client", express.static(path.join(__dirname, "../client")));
-    app.use("/assets", express.static(path.join(__dirname, "../assets")));
-    app.use("/css", express.static(path.join(__dirname, "../css")));
+    app.use(express.static(path.join(__dirname, "../../../../public")));
     //app.use(serveFavicon(path.join(__dirname, "../public/favicon.ico")));
 
     app.use(MethodOverride.configuration());

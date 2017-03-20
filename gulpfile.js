@@ -1,34 +1,40 @@
-let gulp            = require("gulp"),
-    ts              = require("gulp-typescript"),
-    nodemon         = require('gulp-nodemon'),
-    tslint          = require("gulp-tslint"),
-    livereload      = require('gulp-livereload')
+let gulp       = require("gulp"),
+    ts         = require("gulp-typescript"),
+    nodemon    = require("gulp-nodemon"),
+    tslint     = require("gulp-tslint"),
+    livereload = require("gulp-livereload"),
+    mocha      = require("gulp-spawn-mocha"),
+    sass       = require("gulp-sass")
   ;
 
-//www
-gulp.task('default', ['www']);
-gulp.task('www', ['serve'], function () {
+const filesToMove = ["public/**/*", "views/**/*", "server/**/*.json", "!public/sass/**/*", "!public/sass"];
 
-});
+const sassIndex = "public/sass/index.scss";
 
-gulp.task('serve', ['watch', 'json-assets'], function () {
+// pull in the project TypeScript config
+const tsProject = ts.createProject("tsconfig.json");
+
+
+//dev server build and start --watch
+gulp.task("default", ["serve"]);
+
+gulp.task("serve", ["watch", "move-files", "compile-sass", "build-dist"], function () {
   nodemon({
-    script: './dist/server/server',
-    ext   : 'js',
-  }).on('restart', function () {
+    script: "./dist/server/server",
+    ext   : "js",
+  }).on("restart", function () {
     setTimeout(function () {
       livereload.changed();
     }, 500);
   });
 });
 
-// pull in the project TypeScript config
-const tsProject = ts.createProject('tsconfig.json');
+gulp.task("build-serve", ["build-dist", "ts-lint", "move-files", "compile-sass"]);
 
-gulp.task('build-dist', ['ts-lint'], () => {
+gulp.task("build-dist", ["ts-lint"], () => {
   const tsResult = tsProject.src()
     .pipe(tsProject());
-  return tsResult.js.pipe(gulp.dest('dist'));
+  return tsResult.js.pipe(gulp.dest("dist"));
 });
 
 gulp.task("ts-lint", function () {
@@ -41,25 +47,36 @@ gulp.task("ts-lint", function () {
     }));
 });
 
-gulp.task('watch', ['build-dist'], () => {
-  gulp.watch('server/**/*.ts', ['build-dist']);
-  gulp.watch('server/**/*.json', ['json-assets']);
+gulp.task("watch", () => {
+  gulp.watch("server/**/*.ts", ["build-dist"]);
+  gulp.watch(filesToMove, ["move-files"]);
+  gulp.watch(sassIndex, ["compile-sass"]);
 });
 
-gulp.task('json-assets', function() {
-  return gulp.src('server/**/*.json')
-    .pipe(gulp.dest('dist/server'));
+gulp.task("move-files", function () {
+  return gulp.src(filesToMove, { base: "." })
+    .pipe(gulp.dest("dist"));
+});
+
+// Sass compile
+
+gulp.task("compile-sass", function () {
+  return gulp.src(sassIndex)
+    .pipe(sass({
+      outputStyle: "compressed"
+    }))
+    .pipe(gulp.dest("dist/public/css/"));
 });
 
 //Testing
-gulp.task('test', ["run-tests", "test-watch"]);
+gulp.task("test", ["run-tests", "test-watch"]);
 
-gulp.task('run-tests', ['build-dist'], function () {
+gulp.task("run-tests", ["build-dist"], function () {
   return gulp
-    .src(['./dist/test/*.js'])
+    .src(["./dist/test/*.js"])
     .pipe(mocha());
 });
 
-gulp.task('test-watch', function () {
-  gulp.watch(['server/**/*.ts', 'test/**/*.ts'], ['run-tests']);
+gulp.task("test-watch", function () {
+  gulp.watch(["server/**/*.ts", "test/**/*.ts"], ["run-tests"]);
 });

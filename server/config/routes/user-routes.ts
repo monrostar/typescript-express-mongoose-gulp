@@ -1,5 +1,5 @@
 import express = require("express");
-import UserController = require("../../controllers/user-controller");
+import UserController = require("../../controllers/api/user-controller");
 
 let router = express.Router();
 class UserRoutes {
