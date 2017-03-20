@@ -1,4 +1,4 @@
-var gulp            = require("gulp"),
+let gulp            = require("gulp"),
     ts              = require("gulp-typescript"),
     nodemon         = require('gulp-nodemon'),
     tslint          = require("gulp-tslint"),
