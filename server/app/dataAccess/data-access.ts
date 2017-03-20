@@ -17,27 +17,28 @@ class DataAccess {
     if (this.mongooseInstance) {
       return this.mongooseInstance;
     }
-
+    let connectionString = dbConfig.mongodb.connectionString;
     this.mongooseConnection = Mongoose.connection;
     this.mongooseConnection.once("open", () => {
       winston.log("info", "Connect to an mongodb is opened.");
     });
 
-    this.mongooseInstance = Mongoose.connect(dbConfig.mongodb.connectionString);
+    this.mongooseInstance = Mongoose.connect(connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      winston.log("info", `Mongoose default connection open to  ${dbConfig.mongodb.connectionString}`);
+      winston.log("info", `Mongoose default connection open to ${connectionString}`);
     });
 
     // If the connection throws an error
     this.mongooseConnection.on("error", (parameters : { err : any }) => {
       let err = parameters.err;
-      winston.log("info", `Mongoose default connection error: ${err}`);
+      winston.log("error", `Mongoose default connection error: ${err}`);
     });
 
     // When the connection is disconnected
     this.mongooseConnection.on("disconnected", () => {
-      winston.log("info", `Mongoose default connection disconnected.`);
+      this.mongooseInstance = Mongoose.connect(connectionString);
+      winston.log("warning", `Mongoose default connection disconnected.`);
     });
 
     // When the connection is reconnected

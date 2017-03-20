@@ -1,7 +1,6 @@
 import cluster = require("cluster");
 import os = require("os");
 import { getServerConfigs } from "./config/env/index";
-import { isNumber } from "util";
 import * as winston from "winston";
 
 class Cluster {
@@ -56,7 +55,7 @@ class Cluster {
       // logger.log(`Worker ${worker.id} died`);
 
       // Создадим рабочего
-      cluster.fork();
+      //cluster.fork();
     });
 
     cluster.on("online", (worker) => {
