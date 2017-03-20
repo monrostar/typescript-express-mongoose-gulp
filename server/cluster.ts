@@ -37,16 +37,19 @@ class Cluster {
     let pidToPort = {};
     let worker, port;
     for (let i = 0; i < this.numCPUs; i++) {
+
+      //args: [ "--use", "https" ] or use https
+      cluster.setupMaster({
+        args: [ "--use", "http" ],
+        silent: true
+      });
+
       port                            = getServerConfigs().port + i;
-      worker                          = cluster.fork({ port: port });
+      worker                          = cluster.fork({ port: port }); // Использует https
       pidToPort[ worker.process.pid ] = port;
     }
 
     console.log(pidToPort);
-
-    cluster.on("fork", (worker) => {
-
-    });
 
     cluster.on("online", (worker) => {
       //Если рабочий соединился с нами запишем это в лог!
