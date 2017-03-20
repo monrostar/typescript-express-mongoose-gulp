@@ -2,6 +2,7 @@ import cluster = require("cluster");
 import os = require("os");
 import { getServerConfigs } from "./config/env/index";
 import * as winston from "winston";
+import { timeout } from "rxjs/operator/timeout";
 
 class Cluster {
   private numCPUs : number;
@@ -33,18 +34,28 @@ class Cluster {
     winston.log("info", `Master ${process.pid} is running`);
 
     // Fork workers.
+    let pidToPort = {};
+    let worker, port;
     for (let i = 0; i < this.numCPUs; i++) {
-      cluster.fork();
+      port                            = getServerConfigs().port + i;
+      worker                          = cluster.fork({ port: port });
+      pidToPort[ worker.process.pid ] = port;
     }
 
-    cluster.on("exit", (worker, code, signal) => {
-      if (signal) {
-        winston.log("info", `worker was killed by signal: ${signal}`);
-      } else if (code !== 0) {
-        winston.log("info", `worker exited with error code: ${code}`);
-      } else {
-        winston.log("info", "worker success!");
-      }
+    console.log(pidToPort);
+
+    cluster.on("fork", (worker) => {
+
+    });
+
+    cluster.on("online", (worker) => {
+      //Если рабочий соединился с нами запишем это в лог!
+      // logger.log(`Worker ${worker.id} running`);
+      winston.log("info", `Worker ${worker.id} running`);
+    });
+
+    cluster.on("listening", (worker, address) => {
+      winston.log("info", `Worker listening ${worker.process.pid} : ${address.port}`);
     });
 
     cluster.on("disconnect", (worker, code, signal) => {
@@ -58,13 +69,14 @@ class Cluster {
       //cluster.fork();
     });
 
-    cluster.on("online", (worker) => {
-      //Если рабочий соединился с нами запишем это в лог!
-      // logger.log(`Worker ${worker.id} running`);
-      winston.log("info", `Worker ${worker.id} running`);
-    });
-    cluster.on("listening", (address) => {
-      // Worker is listening
+    cluster.on("exit", (worker, code, signal) => {
+      if (signal) {
+        winston.log("info", `worker was killed by signal: ${signal}`);
+      } else if (code !== 0) {
+        winston.log("info", `worker exited with error code: ${code}`);
+      } else {
+        winston.log("info", "worker success!");
+      }
     });
   }
 }
