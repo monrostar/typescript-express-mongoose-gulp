@@ -36,7 +36,10 @@ class DataAccess {
 
     // When the connection is disconnected
     this.mongooseConnection.on("disconnected", () => {
-      this.mongooseInstance = Mongoose.connect(connectionString);
+      setTimeout(function() {
+        this.mongooseInstance = Mongoose.connect(connectionString);
+      }, 10000);
+
       winston.log("warning", `Mongoose default connection disconnected.`);
     });
 
