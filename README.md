@@ -4,6 +4,10 @@ Example putting TypeScript, MongoDB, Express, WebPack, Pug, Gulp all together in
 # Install dependencies
 Run `npm install` in project folder
 
+## NODE_ENV configs
+Run for lin `export NODE_ENV=development` To use the environment or: "production", "test".
+Run for win `set NODE_ENV=development` To use the environment or: "production", "test".
+
 ## Development server
 Run `npm run start` for a dev server. Navigate to `http://localhost:{ServerConfig->Port}/`. The app will automatically reload if you change any of the source files.
 
