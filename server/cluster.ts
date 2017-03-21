@@ -2,7 +2,6 @@ import cluster = require("cluster");
 import os = require("os");
 import { getServerConfigs } from "./config/env/index";
 import * as winston from "winston";
-import { timeout } from "rxjs/operator/timeout";
 
 class Cluster {
   private numCPUs : number;
