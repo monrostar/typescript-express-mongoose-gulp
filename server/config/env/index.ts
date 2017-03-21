@@ -2,16 +2,18 @@ import * as nconf from "nconf";
 import * as path from "path";
 import * as winston from "winston";
 
+let envConfig = process.env.NODE_ENV || "development";
+
 const configs = new nconf.Provider({
   env: true,
   argv: true,
   store: {
     type: "file",
-    file: path.join(__dirname, `./config.${process.env.NODE_ENV || "development"}.json`)
+    file: path.join(__dirname, `./config.${envConfig}.json`)
   }
 });
 
-winston.log("info", `Worker use ${process.env.NODE_ENV} configurations`);
+winston.log("info", `Worker use ${envConfig} configurations`);
 
 
 // interfaces
