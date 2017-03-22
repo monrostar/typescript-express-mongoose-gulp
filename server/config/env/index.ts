@@ -13,7 +13,7 @@ const configs = new nconf.Provider({
   }
 });
 
-winston.log("info", `Worker use ${envConfig} configurations`);
+winston.log("info", `Server use ${envConfig} configurations`);
 
 
 // interfaces
