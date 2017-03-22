@@ -48,8 +48,6 @@ class Cluster {
       pidToPort[ worker.process.pid ] = port;
     }
 
-    console.log(pidToPort);
-
     cluster.on("online", (worker) => {
       //Если рабочий соединился с нами запишем это в лог!
       // logger.log(`Worker ${worker.id} running`);
