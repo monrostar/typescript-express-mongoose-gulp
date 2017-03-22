@@ -1,6 +1,6 @@
 import express = require("express");
 import { Request, Response, NextFunction } from "express";
-import UserRoutes = require("../user-routes");
+import UserRoutes = require("../api/user-routes");
 import * as passport from "passport";
 import AuthRoutes = require("../api/auth-routes");
 class BaseRoutes {

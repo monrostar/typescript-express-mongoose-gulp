@@ -3,31 +3,9 @@ import IBaseController = require("../interfaces/base/base-controller");
 import UserBusiness = require("../../app/business/user-business");
 import IUserModel = require("../../app/model/interfaces/i-user-model");
 import * as winston from "winston";
+import UserController = require("./user-controller");
 
-class AuthController implements IBaseController <UserBusiness> {
-  retrieve : e.RequestHandler;
-  findById : e.RequestHandler;
-  update : e.RequestHandler;
-  delete : e.RequestHandler;
-
-  create(req : e.Request, res : e.Response, next : e.NextFunction) : void {
-    try {
-      let user : IUserModel = <IUserModel>req.body;
-      let userBusiness      = new UserBusiness();
-      userBusiness.create(user, (error, result) => {
-        if (error) {
-          res.send({ "error": "error" });
-        } else {
-          res.send({ "success": "success" });
-        }
-      });
-    } catch (e) {
-
-      winston.log("info", e);
-      next({status: 400, "error": "error in your request" });
-
-    }
-  }
+class AuthController extends UserController {
 
   token(req : e.Request, res : e.Response, next : e.NextFunction) : void {
     try {

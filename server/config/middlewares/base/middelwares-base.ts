@@ -6,14 +6,18 @@ import bodyParser = require("body-parser");
 import morgan = require("morgan");
 import path = require("path");
 import passport = require("passport");
+import passportLocal = require("passport-local");
 import passportStrategy = require("passport-strategy");
+import passportBearer = require("passport-http-bearer");
 
 import MethodOverride = require("../method-override");
 import BaseRoutes = require("../../routes/base/base-routes");
 import * as serveFavicon from "serve-favicon";
 import ErrorHandler = require("../error-handler");
 import { getServerConfigs, getMemcachedConfigs, getSessionConfigs } from "../../env/index";
-import User = require("../../../app/model/user-model");
+import UserBusiness = require("../../../app/business/user-business");
+import UserModel = require("../../../app/model/user-model");
+import UserRepository = require("../../../app/repository/user-repository");
 
 class MiddlewaresBase {
 
@@ -51,6 +55,21 @@ class MiddlewaresBase {
     //app.use(serveFavicon(path.join(__dirname, "../public/favicon.ico")));
 
     app.use(MethodOverride.configuration());
+
+    // Passport init
+    app.use(passport.initialize());
+    app.use(passport.session());
+    passport.use(new passportBearer.Strategy((token, done) => {
+      new UserRepository().find({ token: token }, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+    }));
 
     app.use(new BaseRoutes().routes);
 
