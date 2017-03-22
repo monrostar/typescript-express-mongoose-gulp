@@ -2,6 +2,7 @@ import UserModel = require("../model/user-model");
 import IUserModel = require("../model/interfaces/i-user-model");
 import IUserBusiness = require("./interfaces/i-user-business");
 import UserRepository = require("../repository/user-repository");
+import Bcrypt = require("bcrypt");
 
 
 class UserBusiness implements IUserBusiness {
@@ -9,6 +10,10 @@ class UserBusiness implements IUserBusiness {
 
   constructor() {
     this._userRepository = new UserRepository();
+  }
+
+  static comparePasswords(candidatePassword : string, password: string, callback : (error : any, result : any) => void) {
+    Bcrypt.compare(candidatePassword, password, callback);
   }
 
   create(item : IUserModel, callback : (error : any, result : any) => void) {

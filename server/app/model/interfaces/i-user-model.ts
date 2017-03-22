@@ -5,9 +5,14 @@ interface IUserModel extends mongoose.Document {
   modifiedAt : Date;
   name : string;
   lol : string;
-  email : string;
+  email : {
+    email : string, confirmed : boolean, updatedAt : Date
+  };
   password : string;
   achievements : string;
+  token : {
+    token : string, expiration : Date,
+  };
 }
 
 export = IUserModel;

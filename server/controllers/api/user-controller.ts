@@ -11,11 +11,11 @@ class UserController implements IBaseController <UserBusiness> {
     try {
       let user : IUserModel = <IUserModel>req.body;
       let userBusiness      = new UserBusiness();
-      userBusiness.create(user, (error, result) => {
+      userBusiness.create(user, (error, user) => {
         if (error) {
-          res.send({ "error": "error" });
+          res.send({ "error": error });
         } else {
-          res.send({ "success": "success" });
+          res.send({ "success": user });
         }
       });
     } catch (e) {

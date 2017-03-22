@@ -11,11 +11,19 @@ class UserSchema {
     let schema = mongoose.Schema({
       createdAt   : { type: Date, required: false },
       updatedAt   : { type: Date, required: false },
-      name        : { type: String, required: true, unique: true, index: true },
-      lol         : { type: String, required: false, sparse: true, lowercase: true },
-      email       : { type: String, required: true, unique: true, index: true },
+      name        : { type: String, trim: true, required: true, unique: true, index: true },
+      lol         : { type: String, trim: true, required: false, sparse: true, lowercase: true, index: true },
+      email       : {
+        email    : { type: String, trim: true, required: true, unique: true, index: true },
+        confirmed: { type: Boolean, required: false, default: false},
+        updatedAt: { type: Date, required: false },
+      },
       password    : { type: String, required: true },
-      achievements: { type: String, required: false }
+      achievements: { type: String, required: false },
+      token       : {
+        token     : { type: String, trim: true, required: false},
+        expiration: { type: Date, required: false}
+      }
     });
 
     schema.pre("save", function (next : any) {

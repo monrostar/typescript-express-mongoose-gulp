@@ -13,7 +13,11 @@ class UserModel {
   }
 
   get email() : string {
-    return this._userModel.email;
+    return this._userModel.email.email;
+  }
+
+  get token() : string {
+    return this._userModel.token.token;
   }
 
   get achievements() : string {

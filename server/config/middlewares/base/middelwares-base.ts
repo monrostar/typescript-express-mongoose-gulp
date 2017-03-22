@@ -5,10 +5,6 @@ import flash = require("connect-flash");
 import bodyParser = require("body-parser");
 import morgan = require("morgan");
 import path = require("path");
-import passport = require("passport");
-import passportLocal = require("passport-local");
-import passportStrategy = require("passport-strategy");
-import passportBearer = require("passport-http-bearer");
 
 import MethodOverride = require("../method-override");
 import BaseRoutes = require("../../routes/base/base-routes");
@@ -18,6 +14,7 @@ import { getServerConfigs, getMemcachedConfigs, getSessionConfigs } from "../../
 import UserBusiness = require("../../../app/business/user-business");
 import UserModel = require("../../../app/model/user-model");
 import UserRepository = require("../../../app/repository/user-repository");
+import PassportStrategy = require("../passport-strategy");
 
 class MiddlewaresBase {
 
@@ -37,8 +34,6 @@ class MiddlewaresBase {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(session(sessionOptions));
-    app.use(passport.initialize());
-    app.use(passport.session());
 
     app.use(flash());
     // Global flash vars
@@ -56,23 +51,13 @@ class MiddlewaresBase {
 
     app.use(MethodOverride.configuration());
 
-    // Passport init
-    app.use(passport.initialize());
-    app.use(passport.session());
-    passport.use(new passportBearer.Strategy((token, done) => {
-      new UserRepository().find({ token: token }, (err, user) => {
-        if (err) {
-          return done(err);
-        }
-        if (!user) {
-          return done(null, false);
-        }
-        return done(null, user);
-      });
-    }));
+    // Passport and strategy init
+    let passportStrategy = new PassportStrategy(app).init();
 
+    // All app routes
     app.use(new BaseRoutes().routes);
 
+    // Errors handlers init
     let errorHandler = new ErrorHandler(app).init();
 
     return app;

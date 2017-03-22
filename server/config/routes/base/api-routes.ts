@@ -1,22 +1,19 @@
 import express = require("express");
 import { Request, Response, NextFunction } from "express";
 import UserRoutes = require("../api/user-routes");
-import * as passport from "passport";
 import AuthRoutes = require("../api/auth-routes");
-import ApiRoutes = require("./api-routes");
-class BaseRoutes {
+import passport = require("passport");
+class ApiRoutes {
 
   get routes(): express.Application {
     let app = express();
     let router = express.Router();
 
-    app.use(router.get("/", (req, res, next) => {
-      res.render("index");
-    }));
+    app.use("/auth", new AuthRoutes().routes);
 
-    app.use("/api", new ApiRoutes().routes);
+    app.use("/me", passport.authenticate("bearer", { session: false }), new UserRoutes().routes);
 
     return app;
   }
 }
-export = BaseRoutes;
+export = ApiRoutes;
