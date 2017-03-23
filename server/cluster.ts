@@ -51,7 +51,7 @@ class Cluster {
     }
 
     cluster.on("message", (worker: cluster.Worker, msg : any) => {
-      console.log(`Getting message from process :  ${worker.id}`);
+      console.log(`Getting message from process : ${worker.process.pid}`);
 
       if (msg.cmd && msg.cmd === "notifyRequest") {
         numberOfRequests += 1;
@@ -71,7 +71,7 @@ class Cluster {
     });
 
     cluster.on("listening", (worker, address) => {
-      winston.log("info", `Worker listening ${worker.process.pid} : ${address.port}`);
+      winston.log("info", `Worker listening ${worker.process.pid} : port ${address.port}`);
     });
 
     cluster.on("disconnect", (worker, code, signal) => {
