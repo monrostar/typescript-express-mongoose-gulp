@@ -18,8 +18,8 @@ class AuthController extends UserController {
         email: { email }
       };
       userBusiness.find(expression, (error, user) => {
-        if (error) {
-          next({ status: 400, "error": "error" });
+        if (error == null || error) {
+          next({ status: 400, "error": error });
         } else {
           const token = jwt.sign({ _id: user._id }, getServerConfigs().jwtSecret);
           res.json({ token });
