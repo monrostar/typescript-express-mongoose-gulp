@@ -30,9 +30,11 @@ class Cluster {
       return;
     }
 
+
     winston.log("info", `Master ${process.pid} is running`);
 
     // Fork workers.
+    let numberOfRequests = 0;
     let pidToPort = {};
     let worker, port;
     for (let i = 0; i < this.numCPUs; i++) {
@@ -47,6 +49,20 @@ class Cluster {
       worker                          = cluster.fork({ port: port }); // Использует https
       pidToPort[ worker.process.pid ] = port;
     }
+
+    cluster.on("message", (worker: cluster.Worker, msg : any) => {
+      console.log(`Getting message from process :  ${worker.id}`);
+
+      if (msg.cmd && msg.cmd === "notifyRequest") {
+        numberOfRequests += 1;
+        console.log(numberOfRequests);
+      }
+
+      if (msg.log) {
+        console.log(msg.log);
+      }
+
+    });
 
     cluster.on("online", (worker) => {
       //Если рабочий соединился с нами запишем это в лог!

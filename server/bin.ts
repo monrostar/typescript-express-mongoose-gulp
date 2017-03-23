@@ -21,14 +21,6 @@ class Bin {
 
   protected init() : void {
 
-    this.app.use((req, res, next) => {
-
-      // notify master about the request
-      process.send({ cmd: "notifyRequest" });
-
-      next();
-    });
-
     this.configureServer();
 
     const httpServer = http.createServer(this.app);
