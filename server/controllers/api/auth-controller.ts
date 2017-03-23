@@ -17,13 +17,18 @@ class AuthController extends UserController {
       let expression                 = {
         email: { email }
       };
+
       userBusiness.find(expression, (error, user) => {
-        if (error == null || error) {
+        if (error) {
           next({ status: 400, "error": error });
-        } else {
+        }
+
+        if (user) {
           const token = jwt.sign({ _id: user._id }, getServerConfigs().jwtSecret);
           res.json({ token });
         }
+
+        next({status: 404, message: "Not found user"});
       });
 
     } catch (e) {
