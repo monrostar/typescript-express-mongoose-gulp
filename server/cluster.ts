@@ -51,14 +51,13 @@ class Cluster {
     }
 
     cluster.on("message", (worker: cluster.Worker, msg : any) => {
-      console.log(`Getting message from process : ${worker.process.pid}`);
 
       if (msg.cmd && msg.cmd === "notifyRequest") {
         numberOfRequests += 1;
       }
 
       switch (msg.type) {
-        case "console": console.log(msg.data);
+        case "console": console.log(`Getting message from process : ${worker.process.pid}. Data: ${msg.data}`);
           break;
 
         default: break;
