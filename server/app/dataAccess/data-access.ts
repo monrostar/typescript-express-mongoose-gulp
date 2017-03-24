@@ -1,6 +1,7 @@
 import Mongoose = require("mongoose");
 import { getDatabaseConfig } from "../../config/env/index";
 import * as winston from "winston";
+import Bluebird = require("bluebird");
 
 class DataAccess {
   static mongooseInstance : any;
@@ -17,8 +18,11 @@ class DataAccess {
     if (this.mongooseInstance) {
       return this.mongooseInstance;
     }
+
+    Mongoose.Promise = Bluebird;
     let connectionString = dbConfig.mongodb.connectionString;
     this.mongooseConnection = Mongoose.connection;
+
     this.mongooseConnection.once("open", () => {
       winston.log("info", "Connect to an mongodb is opened.");
     });
