@@ -15,9 +15,9 @@ import UserBusiness = require("../../../app/business/user-business");
 import UserModel = require("../../../app/model/user-model");
 import UserRepository = require("../../../app/repository/user-repository");
 import PassportStrategy = require("../passport-strategy");
-import Factory = require("../../../factory");
+import Container = require("../../../container");
 
-const ConsoleLogger = Factory.ConsoleLogger;
+const ConsoleLogger = Container.ConsoleLogger;
 
 class MiddlewaresBase {
 
