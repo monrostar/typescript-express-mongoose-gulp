@@ -55,11 +55,13 @@ class Cluster {
 
       if (msg.cmd && msg.cmd === "notifyRequest") {
         numberOfRequests += 1;
-        console.log(numberOfRequests);
       }
 
-      if (msg.log) {
-        console.log(msg.log);
+      switch (msg.type) {
+        case "console": console.log(msg.data);
+          break;
+
+        default: break;
       }
 
     });

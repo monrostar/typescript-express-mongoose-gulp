@@ -1,5 +1,6 @@
 import ILoggerService = require("../../config/middlewares/loggers/interfaces/i-logger-service");
 import ILogger = require("../../config/middlewares/loggers/interfaces/i-logger");
+import ConsoleLogger = require("../../config/middlewares/loggers/console-logger");
 
 class LoggerService implements ILoggerService {
 

@@ -15,11 +15,16 @@ import UserBusiness = require("../../../app/business/user-business");
 import UserModel = require("../../../app/model/user-model");
 import UserRepository = require("../../../app/repository/user-repository");
 import PassportStrategy = require("../passport-strategy");
+import Factory = require("../../../factory");
+
+const ConsoleLogger = Factory.ConsoleLogger;
 
 class MiddlewaresBase {
 
   static get configuration() {
     let app = express();
+
+    ConsoleLogger.log({type: "console", data: "test app factory"});
 
     let sessionOptions = Object(getSessionConfigs());
     if (process.env.NODE_ENV === "production") {
