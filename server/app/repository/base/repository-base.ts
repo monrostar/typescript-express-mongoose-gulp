@@ -34,10 +34,13 @@ class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IWrite<T>
     this._model.findById(_id, callback);
   }
 
-  find(expression : Object, callback : (error : any, result : T) => void) {
+  find(expression : Object, callback : (error : any, result : Array<T>) => void) {
     this._model.find(expression, callback);
   }
 
+  findOne(expression : Object, callback : (error : any, result : T) => void) {
+    this._model.findOne(expression, callback);
+  }
 
   private toObjectId(_id : string) : mongoose.Types.ObjectId {
     return mongoose.Types.ObjectId.createFromHexString(_id);

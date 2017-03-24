@@ -44,9 +44,14 @@ class UserBusiness implements IUserBusiness {
     this._userRepository.findById(_id, callback);
   }
 
-  find(expression : Object, callback : (error : any, result : IUserModel) => void) {
+  findOne(expression : Object, callback : (error : any, result : IUserModel) => void) {
+    this._userRepository.findOne(expression, callback);
+  }
+
+  find(expression : Object, callback : (error : any, result :  Array<IUserModel>) => void) {
     this._userRepository.find(expression, callback);
   }
+
 
 }
 

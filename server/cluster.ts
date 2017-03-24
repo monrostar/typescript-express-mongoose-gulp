@@ -57,7 +57,7 @@ class Cluster {
       }
 
       switch (msg.type) {
-        case "console": console.log(`Getting message from process : ${worker.process.pid}. Data: ${msg.data}`);
+        case "console": console.log(msg.data);
           break;
 
         default: break;
@@ -83,7 +83,7 @@ class Cluster {
       // logger.log(`Worker ${worker.id} died`);
 
       // Создадим рабочего
-      //cluster.fork();
+      cluster.fork();
     });
 
     cluster.on("exit", (worker, code, signal) => {
