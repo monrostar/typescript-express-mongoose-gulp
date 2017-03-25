@@ -3,7 +3,7 @@ import os = require("os");
 import path = require("path");
 import fs = require("fs");
 import { getServerConfigs } from "./config/env/index";
-import * as winston from "winston";
+import winston = require("winston");
 import Constants = require("./config/constants/constants");
 
 class Cluster {
@@ -32,16 +32,16 @@ class Cluster {
       return;
     }
 
-    let logDirectory = "../logs/error-log.log";
+    let logDirectory = path.join(__dirname, "../logs");
     // ensure log directory exists
-    if (fs.existsSync(logDirectory)) {
+    if (fs.existsSync(logDirectory) === false) {
       fs.mkdirSync(logDirectory);
     }
 
     let winstonLogger = new winston.Logger({
       transports       : [ new (winston.transports.File)({
-        level           : "error",
-        filename        : path.join(__dirname, logDirectory),
+        levels          : process.env.NODE_ENV === "development" ? [ "debug" ] : [ "info", "error", "warn" ],
+        filename        : logDirectory + "/error-log.log",
         handleExceptions: true,
         json            : true,
         maxsize         : 5242880, //5MB
@@ -49,20 +49,23 @@ class Cluster {
         colorize        : false,
         timestamp       : true
       }), new (winston.transports.Console)({
-        levels: ["debug", "info"], handleExceptions: true, json: false, colorize: true
+        levels          : process.env.NODE_ENV === "development" ? [ "debug" ] : [ "info", "error", "warn" ],
+        handleExceptions: true,
+        json            : false,
+        colorize        : true
       }) ], exitOnError: false
     });
 
+
     // Fork workers.
     let numberOfRequests = 0;
-    let pidToPort = {};
+    let pidToPort        = {};
     let worker, port;
     for (let i = 0; i < this.numCPUs; i++) {
 
       //args: [ "--use", "https" ] or use https
       cluster.setupMaster({
-        args: [ "--use", "http" ],
-        silent: true
+        args: [ "--use", "http" ], silent: true
       });
 
       port                            = getServerConfigs().port + i;
@@ -70,7 +73,7 @@ class Cluster {
       pidToPort[ worker.process.pid ] = port;
     }
 
-    cluster.on("message", (worker: cluster.Worker, msg : any) => {
+    cluster.on("message", (worker : cluster.Worker, msg : any) => {
 
       if (msg.cmd && msg.cmd === "notifyRequest") {
         numberOfRequests += 1;
@@ -78,11 +81,14 @@ class Cluster {
       }
 
       switch (msg.type) {
-        case Constants.LOGGER_CONSOLE: console.log(msg.level, msg.data);
+        case Constants.LOGGER_CONSOLE:
+          console.log(msg.level, msg.data);
           break;
-        case Constants.LOGGER_WINSTON: winstonLogger.log(msg.level, msg.data);
+        case Constants.LOGGER_WINSTON:
+          winstonLogger.log(msg.level, msg.data);
           break;
-        default: break;
+        default:
+          break;
       }
 
     });
