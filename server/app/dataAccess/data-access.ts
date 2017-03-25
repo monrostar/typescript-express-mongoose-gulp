@@ -2,6 +2,7 @@ import Mongoose = require("mongoose");
 import { getDatabaseConfig } from "../../config/env/index";
 import * as winston from "winston";
 import Bluebird = require("bluebird");
+import Container = require("../../container");
 
 class DataAccess {
   static mongooseInstance : any;
@@ -12,7 +13,7 @@ class DataAccess {
   }
 
   static connect() : Mongoose.Connection {
-
+    let ConsoleLogger = Container.ConsoleLogger;
     let dbConfig = getDatabaseConfig();
 
     if (this.mongooseInstance) {
@@ -24,18 +25,18 @@ class DataAccess {
     this.mongooseConnection = Mongoose.connection;
 
     this.mongooseConnection.once("open", () => {
-      winston.log("info", "Connect to an mongodb is opened.");
+      ConsoleLogger.log("info", "Connect to an mongodb is opened.");
     });
 
     this.mongooseInstance = Mongoose.connect(connectionString);
 
     this.mongooseConnection.on("connected", () => {
-      winston.log("info", `Mongoose default connection open to ${connectionString}`);
+      ConsoleLogger.log("info", `Mongoose default connection open to ${connectionString}.`);
     });
 
     // If the connection throws an error
     this.mongooseConnection.on("error", (msg) => {
-        winston.log("error", `Mongoose default connection message: ${msg}`);
+      ConsoleLogger.log("error", `Mongoose default connection message: ${msg}`);
     });
 
     // When the connection is disconnected
@@ -44,18 +45,18 @@ class DataAccess {
         this.mongooseInstance = Mongoose.connect(connectionString);
       }, 10000);
 
-      winston.log("warning", `Mongoose default connection disconnected.`);
+      ConsoleLogger.log("warn", `Mongoose default connection disconnected.`);
     });
 
     // When the connection is reconnected
     this.mongooseConnection.on("reconnected", () => {
-      winston.log("info", `Mongoose default connection is reconnected`);
+      ConsoleLogger.log("info", `Mongoose default connection is reconnected.`);
     });
 
     // If the Node process ends, close the Mongoose connection
     process.on("SIGINT", () => {
       this.mongooseConnection.close(() => {
-        winston.log("info", `Mongoose default connection disconnected through app termination`);
+        ConsoleLogger.log("info", `Mongoose default connection disconnected through app termination.`);
         process.exit(0);
       });
     });

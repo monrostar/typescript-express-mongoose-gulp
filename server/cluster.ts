@@ -1,7 +1,10 @@
 import cluster = require("cluster");
 import os = require("os");
+import path = require("path");
+import fs = require("fs");
 import { getServerConfigs } from "./config/env/index";
 import * as winston from "winston";
+import Constants = require("./config/constants/constants");
 
 class Cluster {
   private numCPUs : number;
@@ -23,15 +26,32 @@ class Cluster {
     this.init();
   }
 
-
   protected init() : void {
 
     if (!cluster.isMaster) {
       return;
     }
 
+    let logDirectory = "../logs/error-log.log";
+    // ensure log directory exists
+    if (fs.existsSync(logDirectory)) {
+      fs.mkdirSync(logDirectory);
+    }
 
-    winston.log("info", `Master ${process.pid} is running`);
+    let winstonLogger = new winston.Logger({
+      transports       : [ new (winston.transports.File)({
+        level           : "error",
+        filename        : path.join(__dirname, logDirectory),
+        handleExceptions: true,
+        json            : true,
+        maxsize         : 5242880, //5MB
+        maxFiles        : 5,
+        colorize        : false,
+        timestamp       : true
+      }), new (winston.transports.Console)({
+        levels: ["debug", "info"], handleExceptions: true, json: false, colorize: true
+      }) ], exitOnError: false
+    });
 
     // Fork workers.
     let numberOfRequests = 0;
@@ -54,12 +74,14 @@ class Cluster {
 
       if (msg.cmd && msg.cmd === "notifyRequest") {
         numberOfRequests += 1;
+        winstonLogger.info(`Request count: ${numberOfRequests}`);
       }
 
       switch (msg.type) {
-        case "console": console.log(msg.data);
+        case Constants.LOGGER_CONSOLE: console.log(msg.level, msg.data);
           break;
-
+        case Constants.LOGGER_WINSTON: winstonLogger.log(msg.level, msg.data);
+          break;
         default: break;
       }
 
@@ -67,32 +89,30 @@ class Cluster {
 
     cluster.on("online", (worker) => {
       //Если рабочий соединился с нами запишем это в лог!
-      // logger.log(`Worker ${worker.id} running`);
-      winston.log("info", `Worker ${worker.id} running`);
+      winstonLogger.log("info", `Worker ${worker.id} running`);
     });
 
     cluster.on("listening", (worker, address) => {
-      winston.log("info", `Worker listening ${worker.process.pid} : port ${address.port}`);
+      winstonLogger.log("info", `Worker listening ${worker.process.pid} : port ${address.port}`);
     });
 
     cluster.on("disconnect", (worker, code, signal) => {
       // В случае отключения IPC запустить нового рабочего
 
       // запишем в лог отключение сервера, что бы разработчики обратили внимание.
-      winston.log("info", `Worker ${worker.id} died`);
-      // logger.log(`Worker ${worker.id} died`);
+      winstonLogger.log("info", `Worker ${worker.id} died`);
 
-      // Создадим рабочего
+      // Create a worker
       cluster.fork();
     });
 
     cluster.on("exit", (worker, code, signal) => {
       if (signal) {
-        winston.log("info", `worker was killed by signal: ${signal}`);
+        winstonLogger.log("info", `worker was killed by signal: ${signal}`);
       } else if (code !== 0) {
-        winston.log("info", `worker exited with error code: ${code}`);
+        winstonLogger.log("info", `worker exited with error code: ${code}`);
       } else {
-        winston.log("info", "worker success!");
+        winstonLogger.log("info", "worker success!");
       }
     });
   }

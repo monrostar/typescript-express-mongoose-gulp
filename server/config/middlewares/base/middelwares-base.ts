@@ -24,8 +24,6 @@ class MiddlewaresBase {
   static get configuration() {
     let app = express();
 
-    ConsoleLogger.log({type: "console", data: "test app factory"});
-
     let sessionOptions = Object(getSessionConfigs());
     if (process.env.NODE_ENV === "production") {
       let MemcachedStore   = memcached(session);

@@ -19,7 +19,7 @@ class AuthController extends UserController {
         email: { email }
       };
 
-      userBusiness.findOne(expression, (error: any, user: any) => {
+      userBusiness.findOne(expression, (error: any, user: IUserModel) => {
         if (error) {
           next({ status: 400, "error": error });
         }

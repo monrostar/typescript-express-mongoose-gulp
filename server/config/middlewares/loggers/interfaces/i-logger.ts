@@ -1,5 +1,5 @@
 interface ILogger {
-  writeLogs(data: any): void;
+  writeLogs(level: string, data: any): void;
   writeDebug(data: any): void;
 }
 

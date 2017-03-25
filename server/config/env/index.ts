@@ -1,7 +1,9 @@
 import * as nconf from "nconf";
 import * as path from "path";
 import * as winston from "winston";
+import Container = require("../../container");
 
+let ConsoleLogger = Container.ConsoleLogger;
 let envConfig = process.env.NODE_ENV || "development";
 
 const configs = new nconf.Provider({
@@ -13,8 +15,7 @@ const configs = new nconf.Provider({
   }
 });
 
-winston.log("info", `Server use ${envConfig} configurations`);
-
+ConsoleLogger.log("info", `Worker use ${envConfig} configurations`);
 
 // interfaces
 export interface IServerConfigurations {

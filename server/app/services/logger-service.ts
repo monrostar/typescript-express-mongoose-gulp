@@ -10,8 +10,8 @@ class LoggerService implements ILoggerService {
     this._logger = logger;
   };
 
-  public log(data : any) : void {
-    this._logger.writeLogs(data);
+  public log(level: string, data : any) : void {
+    this._logger.writeLogs(level, data);
   }
 
   public debug(data : any) : void {
