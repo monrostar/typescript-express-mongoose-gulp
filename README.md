@@ -1,5 +1,5 @@
-# typescript-webpack-express-mongodb-gulp
-Example putting TypeScript, MongoDB, Express, WebPack, Pug, Gulp all together in a Node.JS app
+# typescript-express-mongodb-gulp
+Example putting TypeScript, MongoDB, Mongoose, Express, Pug, Gulp all together in a Node.JS app
 
 # Install dependencies
 Run `npm install` in project folder
