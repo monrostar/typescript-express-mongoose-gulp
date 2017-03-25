@@ -35,7 +35,13 @@ class MiddlewaresBase {
     app.set("views", path.join(__dirname, "../../../../views"));
     app.set("view engine", "pug");
 
-    app.use(morgan("tiny"));
+    if (process.env.NODE_ENV === "production") {
+      // TODO send callback to master
+      app.use(morgan("common"));
+    } else {
+      // TODO send callback to master
+      app.use(morgan("dev"));
+    }
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(session(sessionOptions));
