@@ -9,8 +9,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "rootDir": ".",
-    "outDir": "dist",
-    "baseUrl": ".",
+    "outDir": ".",
     "listFiles": true,
     "isolatedModules": false,
     "moduleResolution": "node",
@@ -19,9 +18,6 @@
   "include": [
     "server/**/*",
     "test/**/*"
-  ],
-  "exclude": [
-    "node_modules"
   ],
   "types": [
     "node"

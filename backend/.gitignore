@@ -2,7 +2,7 @@
 .vscode
 
 # Transpiled code
-dist
+../dist
 
 # Package files
 *.tgz

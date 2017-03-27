@@ -6,7 +6,8 @@
   "main": "dist/server/server.js",
   "scripts": {
     "clean": "rimraf dist",
-    "start": "npm run clean && gulp"
+    "start": "npm run clean && gulp",
+    "start:prod": "export NODE_ENV=production&& npm run start"
   },
   "authors": [
     "Nitsenko Evgeniy <nitsenko94@gmail.com>"

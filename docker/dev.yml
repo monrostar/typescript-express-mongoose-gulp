@@ -4,7 +4,7 @@ services:
   data:
     image: debian:jessie
     volumes:
-      - /share/leagueplay:/var/www/leagueplay
+      - ../backend:/var/www/leagueplay
 
   #webserver container
   node:
@@ -19,10 +19,10 @@ services:
     image: mongo:3.2
 
   # bower updater
-  bower_updater:
-    build: bower_updater
-    volumes_from:
-      - data:rw
+#  bower_updater:
+#    build: bower_updater
+#    volumes_from:
+#      - data:rw
 
   # Nginx Web Proxy.
   nginx:
@@ -32,4 +32,4 @@ services:
     volumes_from:
       - data:ro
     ports:
-      - "80:80"
+      - "3000:80"

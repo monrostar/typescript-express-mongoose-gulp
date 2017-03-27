@@ -43,7 +43,7 @@ class DataAccess {
     this.mongooseConnection.on("disconnected", () => {
       setTimeout(function() {
         this.mongooseInstance = Mongoose.connect(connectionString);
-      }, 10000);
+      }, 90000000);
 
       ConsoleLogger.log("warn", `Mongoose default connection disconnected.`);
     });

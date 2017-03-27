@@ -6,7 +6,7 @@ import * as winston from "winston";
 class ConsoleLogger implements ILogger {
 
   public writeLogs(level : string, data : any) : void {
-    if (!cluster.isMaster) {
+    if (!cluster.isMaster ) {
       process.send({ type: Constants.LOGGER_WINSTON, level, data });
     } else {
       let logger = new winston.Logger({
