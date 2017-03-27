@@ -1,19 +1,16 @@
-# VS Code project
-.vscode
-
 # Transpiled code
-dist
+backend/dist
 
 # Package files
-*.tgz
+backend/*.tgz
 
 # Types that are retrieved from typings
-typings
+backend/typings
 
 # Logs
-logs
-*.log
-npm-debug.log*
+backend/logs
+/**/*.log
+backend/npm-debug.log*
 
 # Runtime data
 pids
@@ -29,9 +26,6 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
 # node-waf configuration
 .lock-wscript
 
@@ -39,9 +33,9 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules
-jspm_packages
-bower_components
+backend/node_modules
+backend/jspm_packages
+backend/bower_components
 
 # Optional npm cache directory
 .npm

@@ -3,4 +3,4 @@ RUN apt-get update && npm install -g nodemon
 
 EXPOSE  3000
 
-CMD ["bin/bash","-c", "cd /var/www/leagueplay && npm install && start"]
+CMD ["bin/bash","-c", "cd /var/www/leagueplay && npm install && npm run start"]
