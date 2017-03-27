@@ -2,7 +2,7 @@
     "app": {
         "cpuCores": "*",
         "host": "localhost",
-        "port": 8023,
+        "port": 3000,
         "schema": "http",
         "url": "http://leagueplay.ru",
         "jwtSecret": "ANCDU*A2313SD18213gd18cH*SACJm3668*&T#$)jsADC_Nd9-1ijhAHIDHc)ADHc82AS&&#$&!cSF",
