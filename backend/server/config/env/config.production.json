@@ -20,7 +20,7 @@
 
     "database": {
         "mongodb" : {
-            "connectionString": "mongodb://localhost/prod_db"
+            "connectionString": "mongodb://7b9b1625f1dd/prod_db"
         },
         "pg": {
             "user": "foo",

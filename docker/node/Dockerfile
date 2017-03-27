@@ -1,5 +1,5 @@
 FROM node:7.7.4
-RUN apt-get update && python2.7 && npm install -g nodemon
+RUN apt-get update && npm install -g nodemon
 
 EXPOSE  3000
 

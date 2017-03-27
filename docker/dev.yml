@@ -6,6 +6,10 @@ services:
     volumes:
       - ../backend:/var/www/leagueplay
 
+  #mongodb container
+  mongodb:
+    build: mongodb
+
   #webserver container
   node:
     build: node
@@ -13,16 +17,6 @@ services:
       - data:rw
     ports:
       - "3000"
-
-  #mongodb container
-  mongodb:
-    image: mongo:3.2
-
-  # bower updater
-#  bower_updater:
-#    build: bower_updater
-#    volumes_from:
-#      - data:rw
 
   # Nginx Web Proxy.
   nginx:
