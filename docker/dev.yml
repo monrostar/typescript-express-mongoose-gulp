@@ -9,6 +9,10 @@ services:
   #mongodb container
   mongodb:
     build: mongodb
+    volumes:
+      - ../mongo:/data/db
+    ports:
+      - "27017"
 
   #webserver container
   node:
@@ -20,9 +24,10 @@ services:
 
   # Nginx Web Proxy.
   nginx:
-    build: nginx
+    build:
+        context: ./nginx
     depends_on:
-      - node
+      - data
     volumes_from:
       - data:ro
     ports:

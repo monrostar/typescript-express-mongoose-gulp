@@ -1,7 +1,9 @@
-FROM mongo:3.4.2
+FROM mongo:latest
 
-# Expose port 27017 from the container to the host
+#COPY mongo.conf /usr/local/etc/mongo/mongo.conf
+
+VOLUME /data/db /data/configdb
+
+CMD ["mongod"]
+
 EXPOSE 27017
-
-# Set usr/bin/mongod as the dockerized entry-point application
-ENTRYPOINT ["/usr/bin/mongod"]

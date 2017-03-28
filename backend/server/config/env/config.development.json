@@ -19,7 +19,7 @@
   },
   "database": {
     "mongodb" : {
-      "connectionString": "mongodb://7b9b1625f1dd/prod_db"
+      "connectionString": "mongodb://mongodb:27017/dev_db"
     },
     "pg": {
       "user": "foo",

@@ -1,4 +1,4 @@
-FROM nginx:1.9.9
+FROM nginx:latest
 
 # configuring
 RUN rm /etc/nginx/nginx.conf
