@@ -31,4 +31,4 @@ services:
     volumes_from:
       - data:ro
     ports:
-      - "3000:80"
+      - "80:80"
