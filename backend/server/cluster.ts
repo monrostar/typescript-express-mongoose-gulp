@@ -1,7 +1,5 @@
 import cluster = require("cluster");
 import os = require("os");
-import path = require("path");
-import fs = require("fs");
 import { getServerConfigs } from "./config/env/index";
 import winston = require("winston");
 import Constants = require("./config/constants/constants");

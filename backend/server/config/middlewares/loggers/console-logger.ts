@@ -7,13 +7,13 @@ import fs = require("fs");
 
 class ConsoleLogger implements ILogger {
 
-  protected logger: winston.Logger;
+  protected logger: winston.LoggerInstance;
 
   constructor() {
-    this.logger = this.winston;
+    this.logger = ConsoleLogger.winston;
   }
 
-  protected get winston() : winston.Logger {
+  protected static get winston() : winston.LoggerInstance {
 
     let logDirectory = path.join(__dirname, "../logs");
     // ensure log directory exists
@@ -21,7 +21,7 @@ class ConsoleLogger implements ILogger {
       fs.mkdirSync(logDirectory);
     }
 
-    let winstonLogger = new winston.Logger({
+    return new winston.Logger({
       transports       : [ new (winston.transports.File)({
         levels          : process.env.NODE_ENV === "development" ? [ "debug" ] : [ "info", "error", "warn" ],
         filename        : logDirectory + "/error-log.log",
@@ -38,8 +38,6 @@ class ConsoleLogger implements ILogger {
         colorize        : true
       }) ], exitOnError: false
     });
-
-    return winstonLogger;
 
   }
 
