@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "npm run clean && gulp",
-    "start:prod": "export NODE_ENV=production&& npm run start"
+    "build:prod": "export NODE_ENV=production&& npm run clean && gulp build-serve"
   },
   "authors": [
     "Nitsenko Evgeniy <nitsenko94@gmail.com>"
