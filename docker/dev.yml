@@ -3,8 +3,6 @@ services:
   #data container
   data:
     image: debian:jessie
-    volumes:
-      - ../backend:/var/www/leagueplay
 
   #mongodb container
   mongodb:
@@ -13,14 +11,6 @@ services:
       - ../mongo:/data/db
     ports:
       - "27017"
-
-  #webserver container
-  node:
-    build: node
-    volumes_from:
-      - data:rw
-    ports:
-      - "3000"
 
   # Nginx Web Proxy.
   nginx:
