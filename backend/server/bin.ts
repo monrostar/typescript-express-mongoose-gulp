@@ -3,6 +3,10 @@ import MiddlewaresBase = require("./config/middlewares/base/middelwares-base");
 import express = require("express");
 import http = require("http");
 import * as winston from "winston";
+import DataAccess = require("./app/dataAccess/data-access");
+import Container = require("./container");
+
+const ConsoleLogger = Container.ConsoleLogger;
 
 class Bin {
   protected port : number;
@@ -29,8 +33,7 @@ class Bin {
     httpServer.on("listening", () => {
       const addr = httpServer.address();
       const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
-
-      winston.log("info", `Listening on ${bind}`);
+      ConsoleLogger.log("info", `The worker listens ${bind} to the server`);
     });
 
     httpServer.once("connection", (stream) => {
@@ -41,7 +44,9 @@ class Bin {
 
     process.on("SIGINT", () => {
       httpServer.close();
-      process.exit();
+      DataAccess.mongooseInstance((err) => {
+        process.exit(err ? 1 : 0);
+      });
     });
 
   }
@@ -56,11 +61,11 @@ class Bin {
     // handle specific listen errors with friendly messages
     switch (error.code) {
       case "EACCES":
-        winston.log("error", `${bind} requires elevated privileges`);
+        ConsoleLogger.log("error", `${bind} requires elevated privileges`);
         process.exit(1);
         break;
       case "EADDRINUSE":
-        winston.log("error", `${bind} is already in use`);
+        ConsoleLogger.log("error", `${bind} is already in use`);
         process.exit(1);
         break;
       default:

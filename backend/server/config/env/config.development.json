@@ -19,7 +19,7 @@
   },
   "database": {
     "mongodb" : {
-      "connectionString": "mongodb://mongodb:27017/dev_db"
+      "connectionString": "mongodb://localhost:27017/dev_db"
     },
     "pg": {
       "user": "foo",
