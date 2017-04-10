@@ -1,5 +1,5 @@
 {
-  "name": "leagueplay",
+  "name": "typescript-express-mongoose-gulp",
   "version": "0.0.1",
   "private": true,
   "description": "Social summoner network",
@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "npm run clean && gulp",
-    "build:prod": "export NODE_ENV=production&& npm run clean && gulp build-serve"
+    "build:prod": "npm run clean && gulp build-serve"
   },
   "authors": [
     "Nitsenko Evgeniy <nitsenko94@gmail.com>"
