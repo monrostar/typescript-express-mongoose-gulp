@@ -16,7 +16,6 @@ import UserModel = require("../../../app/model/user-model");
 import UserRepository = require("../../../app/repository/user-repository");
 import PassportStrategy = require("../passport-strategy");
 import Container = require("../../../container");
-import Container = require("../../../container");
 
 const ConsoleLogger = Container.ConsoleLogger;
 
@@ -25,23 +24,27 @@ class MiddlewaresBase {
   static get configuration() {
     let app = express();
 
-    let sessionOptions : Object = Object(getSessionConfigs());
+    let sessionOptions = Object(getSessionConfigs());
     if (process.env.NODE_ENV === "production") {
       let MemcachedStore   = memcached(session);
-      sessionOptions = Object.assign(sessionOptions, {store : new MemcachedStore(getMemcachedConfigs())});
+      sessionOptions.store = new MemcachedStore(getMemcachedConfigs());
     }
 
     app.set("views", path.join(__dirname, "../../../../views"));
     app.set("view engine", "pug");
 
-    app.use(morgan((tokens, req: express.Request, res: express.Response) => {
-      ConsoleLogger.log("info", [
+    app.use(morgan((tokens : any, req : express.Request, res : express.Response) : void => {
+      let reqInfo = [
         tokens.method(req, res),
         tokens.url(req, res),
         tokens.status(req, res),
-        tokens.res(req, res, "content-length"), "-",
-        tokens["response-time"](req, res), "ms"
-      ].join(" "));
+        tokens.res(req, res, "content-length"),
+        "-",
+        tokens[ "response-time" ](req, res),
+        "ms"
+      ];
+
+      ConsoleLogger.log("info", reqInfo.join(" "));
     }));
 
     app.use(bodyParser.json());
